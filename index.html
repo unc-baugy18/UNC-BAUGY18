@@ -147,8 +147,19 @@
             .navbar a {
                 width: auto; /* Largeur automatique pour s'adapter au contenu */
                 text-align: center; /* Texte centré sur mobile */
-                padding: 10px;
+                padding: 8px; /* Réduit le padding pour les petits écrans */
                 border-radius: 0; /* Supprime les bords arrondis sur mobile */
+                font-size: 0.8em; /* Réduit la taille de la police de moitié */
+                margin-bottom: 0 ; /* Ajoute une marge en bas pour espacer les liens */
+                display: block; /* Pour que le trait bleu s'adapte à la largeur du contenu */
+            }
+            .navbar a:hover::after,
+            .navbar a.active::after {
+                height: 2px; /* Réduit la hauteur du trait bleu sur mobile */
+                width: 70%; /* Adapte la largeur du trait bleu au contenu */
+                margin: 0 auto; /* Centre le trait bleu */
+                left: 0;
+                right: 0;
             }
             .hero-section {
                 padding: 20px 10px;
@@ -175,6 +186,7 @@
 
 <div class="navbar">
     <a href="/" class="active">Accueil</a>
+    <a href="presentation.html">Présentation</a>
     <a href="magazine.html">Magazine</a>
     <a href="actualites.html">Actualités</a>
     <a href="https://docs.google.com/forms/d/e/1FAIpQLSftKzOvljhTeNUzij3CgJCsjs0ZR_k9b0PSTW2Opl1pQCTkCg/viewform?usp=header">Adhérer</a>
