@@ -17,13 +17,13 @@
         .header {
             background-color: #212121; /* Gris foncé pour la partie supérieure */
             color: white;
-            padding: 20px;
+            padding: 10px; /* Réduit le padding pour les petits écrans */
             text-align: center;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 1.5em; /* Réduit la taille de la police pour les petits écrans */
             letter-spacing: 2px;
         }
 
@@ -33,14 +33,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px 0;
+            padding: 5px 0; /* Réduit le padding pour les petits écrans */
             flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur mobile */
         }
         
         .navbar a {
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
+            padding: 5px 10px; /* Réduit le padding pour les petits écrans */
             font-weight: bold;
             transition: background-color 0.3s;
         }
@@ -52,9 +52,9 @@
         .hero-section {
             background-color: #226e93; /* Bleu de l'en-tête de votre page */
             color: white;
-            padding: 60px 20px;
+            padding: 5px;
             text-align: center;
-            height: 340px;
+            height: auto; /* La hauteur s'adapte au contenu */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -63,24 +63,24 @@
         }
 
         .hero-section h2 {
-            font-size: 3em;
-            margin: 0 0 10px;
+            font-size: 1.5em; /* Réduit la taille de la police pour les petits écrans */
+            margin: 0 0 5px;
         }
 
         .hero-section p {
-            font-size: 1.2em;
+            font-size: 0.8em; /* Réduit la taille de la police pour les petits écrans */
             margin: 0;
         }
 
         .content-section {
-            padding: 40px 20px;
+            padding: 20px 10px; /* Réduit le padding pour les petits écrans */
             text-align: center;
         }
         
         .buttons-container {
             display: flex;
             justify-content: center;
-            gap: 50px; /* Espace entre les icônes */
+            gap: 20px; /* Réduit l'espace entre les icônes pour les petits écrans */
             flex-wrap: wrap;
         }
 
@@ -98,16 +98,17 @@
             color: #226e93;
         }
 
-        .icon-button i {
-            font-size: 3em;
-            margin-bottom: 10px;
+        .icon-button img {
+            width: 32px; /* Réduit la taille des icônes pour les petits écrans */
+            height: 32px;
+            margin-bottom: 5px;
         }
 
         .footer {
             background-color: #212121;
             color: #b2b2b2;
             text-align: center;
-            padding: 20px;
+            padding: 10px; /* Réduit le padding pour les petits écrans */
         }
 
         /* Styles pour les écrans plus petits */
@@ -120,49 +121,52 @@
                 text-align: center;
             }
             .hero-section {
-                padding: 40px 20px;
+                padding: 20px 10px;
             }
             .hero-section h2 {
-                font-size: 2em;
+                font-size: 1.5em;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="header" style="display: flex; align-items: center; justify-content: space-between;">
-    <div style="text-align:left;">
-        <h1 style="font-size:1.2em; line-height:1.3; margin:0;">
+<div class="header" style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div style="display: flex; align-items: center; text-align: center;">
+        <h1 style="font-size:1.2em; line-height:1.3; margin:0; text-align:center; letter-spacing:3px;">
             Union Nationale<br>
             des Combattants<br>
             de BAUGY
         </h1>
-        <p style="font-size:1em; margin:0;">Le devoir de mémoire, un engagement pour l'avenir.</p>
+        <img src="UNC de Baugy_fichiers/logo unc.png" alt="Logo UNC" style="height:60px; margin-left:20px;">
     </div>
-    <img src="UNC de Baugy_fichiers/unc.png" alt="Logo UNC" style="height:60px;">
+    <p style="font-size:1em; margin:0; text-align:center;">Le devoir de mémoire, un engagement pour l'avenir.</p>
 </div>
 
-    <div class="hero-section">
-    <!-- Texte supprimé comme demandé -->
-    </div>
+<div class="hero-section" style="height: auto; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+    <img src="UNC de Baugy_fichiers/page_accueil.jpg" alt="Page d'accueil" style="max-width: 100%; height: auto; display: block;">
+</div>
 
-    <div class="content-section">
-        <div class="buttons-container">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSftKzOvljhTeNUzij3CgJCsjs0ZR_k9b0PSTW2Opl1pQCTkCg/viewform?usp=header" class="icon-button" target="_blank">
-                <img src="UNC de Baugy_fichiers/adherer.svg" alt="Bulletin d'adhésion" style="width:48px; height:48px; margin-bottom:10px;">
-                <span>adhérer</span>
-            </a>
-            <a href="archives-photos.html" class="icon-button">
-                <img src="UNC de Baugy_fichiers/photos.svg" alt="Archives photos" style="width:48px; height:48px; margin-bottom:10px;">
-                <span>Archives photos</span>
-            </a>
-            </a>
-            <a href="contact.html" class="icon-button">
-                <img src="UNC de Baugy_fichiers/contact.svg" alt="Contact" style="width:48px; height:48px; margin-bottom:10px;">
-                <span>Contact</span>
-            </a>
-        </div>
+<div class="content-section">
+    <div class="buttons-container">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSftKzOvljhTeNUzij3CgJCsjs0ZR_k9b0PSTW2Opl1pQCTkCg/viewform?usp=header" class="icon-button" target="_blank">
+            <img src="UNC de Baugy_fichiers/adherer.svg" alt="Bulletin d'adhésion">
+            <span>adhérer</span>
+        </a>
+        <a href="archives-photos.html" class="icon-button">
+            <img src="UNC de Baugy_fichiers/photos.svg" alt="Archives photos">
+            <span>Archives photos</span>
+        </a>
+        <a href="contact.html" class="icon-button">
+            <img src="UNC de Baugy_fichiers/contact.svg" alt="Contact">
+            <span>Contact</span>
+        </a>
     </div>
+    <div class="announcements-container" style="margin-top: 20px; text-align: center;">
+        <h3>Annonces</h3>
+        <img src="UNC de Baugy_fichiers/annonce.png" alt="Annonce" style="width: 80%; max-width: 600px;">
+    </div>
+</div>
     
     <div class="footer">
         <p>&copy; 2025 UNC de Baugy. Tous droits réservés.</p>
