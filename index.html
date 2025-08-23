@@ -28,27 +28,54 @@
         }
 
         .navbar {
-            background-color: #1e6c93; /* Bleu marine de votre thème */
-            color: white;
+            background-color: #f8f8f8; /* Fond gris clair */
+            color: #000; /* Texte noir */
             display: flex;
-            justify-content: center;
+            justify-content: center; /* Centre les éléments horizontalement */
             align-items: center;
-            padding: 5px 0; /* Réduit le padding pour les petits écrans */
-            flex-wrap: wrap; /* Permet aux boutons de passer à la ligne sur mobile */
+            padding: 10px 0;
+            flex-wrap: wrap; /* Permet aux éléments de passer à la ligne sur mobile */
+            border-bottom: 1px solid #ddd; /* Ligne de séparation en bas */
         }
         
         .navbar a {
-            color: white;
+            color: #000; /* Texte noir */
             text-decoration: none;
-            padding: 5px 10px; /* Réduit le padding pour les petits écrans */
+            padding: 5px 15px; /* Espacement plus grand autour du texte */
             font-weight: bold;
             transition: background-color 0.3s;
+            border-radius: 5px; /* Bords arrondis */
+            position: relative; /* Ajout de position relative */
         }
         
         .navbar a:hover {
-            background-color: #2284b3; /* Bleu plus clair au survol */
+            background-color: transparent; /* Supprime le fond gris au survol */
         }
 
+        .navbar a:hover::after {
+            content: ''; /* Ajout de contenu vide */
+            position: absolute; /* Positionnement absolu */
+            bottom: 0; /* En bas de l'élément */
+            left: 0; /* À gauche de l'élément */
+            width: 100%; /* Largeur de 100% */
+            height: 3px; /* Hauteur de 3px pour le trait bleu */
+            background-color: blue; /* Couleur bleue */
+            border-radius: 3px; /* Bords arrondis pour le trait bleu */
+        }
+        .navbar a.active {
+            color: blue; /* Couleur bleue pour la page active */
+        }
+
+        .navbar a.active::after {
+            content: ''; /* Ajout de contenu vide */
+            position: absolute; /* Positionnement absolu */
+            bottom: 0; /* En bas de l'élément */
+            left: 0; /* À gauche de l'élément */
+            width: 100%; /* Largeur de 100% */
+            height: 3px; /* Hauteur de 3px pour le trait bleu */
+            background-color: blue; /* Couleur bleue */
+            border-radius: 3px; /* Bords arrondis pour le trait bleu */
+        }
         .hero-section {
             background-color: #226e93; /* Bleu de l'en-tête de votre page */
             color: white;
@@ -115,10 +142,13 @@
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
+                align-items: center; /* Centre les éléments horizontalement sur mobile */
             }
             .navbar a {
-                width: 100%;
-                text-align: center;
+                width: auto; /* Largeur automatique pour s'adapter au contenu */
+                text-align: center; /* Texte centré sur mobile */
+                padding: 10px;
+                border-radius: 0; /* Supprime les bords arrondis sur mobile */
             }
             .hero-section {
                 padding: 20px 10px;
@@ -143,12 +173,29 @@
     <p style="font-size:1em; margin:0; text-align:center;">Le devoir de mémoire, un engagement pour l'avenir.</p>
 </div>
 
+<div class="navbar">
+    <a href="/" class="active">Accueil</a>
+    <a href="magazine.html">Magazine</a>
+    <a href="actualites.html">Actualités</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSftKzOvljhTeNUzij3CgJCsjs0ZR_k9b0PSTW2Opl1pQCTkCg/viewform?usp=header">Adhérer</a>
+    <a href="archives-photos.html">Photos</a>
+    <a href="contact.html">Contact</a>
+</div>
+
 <div class="hero-section" style="height: auto; overflow: hidden; display: flex; align-items: center; justify-content: center;">
-    <img src="UNC de Baugy_fichiers/page_accueil.jpg" alt="Page d'accueil" style="max-width: 100%; height: auto; display: block;">
+    <img src="UNC de Baugy_fichiers/page_accueil.jpg" alt="Page d'accueil" style="max-width: 70%; height: auto; display: block;">
 </div>
 
 <div class="content-section">
     <div class="buttons-container">
+        <a href="magazine.html" class="icon-button">
+            <img src="UNC de Baugy_fichiers/magazine.svg" alt="Magazine">
+            <span>Magazine</span>
+        </a>
+        <a href="actualites.html" class="icon-button">
+            <img src="UNC de Baugy_fichiers/actualites.svg" alt="Actualités">
+            <span>Actualités</span>
+        </a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSftKzOvljhTeNUzij3CgJCsjs0ZR_k9b0PSTW2Opl1pQCTkCg/viewform?usp=header" class="icon-button" target="_blank">
             <img src="UNC de Baugy_fichiers/adherer.svg" alt="Bulletin d'adhésion">
             <span>adhérer</span>

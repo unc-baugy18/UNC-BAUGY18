@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .stroke { fill: none; stroke: #1E4A7B; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .fill-light { fill: #A9C5E8; }
+    </style>
+  </defs>
+  <!-- Cadre du journal -->
+  <rect x="8" y="10" width="48" height="44" rx="4" ry="4" class="stroke"/>
+  <!-- Bandeau (titre) -->
+  <rect x="12" y="14" width="40" height="8" class="stroke fill-light"/>
+  <!-- Encadré gauche avec globe -->
+  <rect x="12" y="24" width="16" height="24" rx="2" ry="2" class="stroke"/>
+  <!-- Globe stylisé -->
+  <circle cx="20" cy="36" r="6" class="stroke fill-light"/>
+  <path d="M14 36h12" class="stroke"/>
+  <path d="M20 30v12" class="stroke"/>
+  <path d="M16.5 31.5c1.2 1.8 1.8 5.2 0 9c2.1 0.9 4.9 0.9 7 0c-1.8-3.8-1.2-7.2 0-9" class="stroke"/>
+  <!-- Colonnes de texte à droite -->
+  <line x1="32" y1="26" x2="50" y2="26" class="stroke"/>
+  <line x1="32" y1="30" x2="50" y2="30" class="stroke"/>
+  <line x1="32" y1="34" x2="50" y2="34" class="stroke"/>
+  <line x1="32" y1="38" x2="50" y2="38" class="stroke"/>
+  <line x1="32" y1="42" x2="50" y2="42" class="stroke"/>
+  <line x1="32" y1="46" x2="50" y2="46" class="stroke"/>
+  <title>Icône Actualités — Journal + Globe</title>
+</svg>
