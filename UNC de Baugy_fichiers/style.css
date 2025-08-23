@@ -1,0 +1,158 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f2f2f2;
+}
+
+.header {
+    background-color: #212121; /* Gris foncé pour la partie supérieure */
+    color: white;
+    padding: 10px; /* Réduit le padding pour les petits écrans */
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.5em; /* Réduit la taille de la police pour les petits écrans */
+    letter-spacing: 2px;
+}
+
+.navbar {
+    background-color: #f8f8f8; /* Fond gris clair */
+    color: #000; /* Texte noir */
+    display: flex;
+    justify-content: center; /* Centre les éléments horizontalement */
+    align-items: center;
+    padding: 10px 0;
+    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne sur mobile */
+    border-bottom: 1px solid #ddd; /* Ligne de séparation en bas */
+}
+
+.navbar a {
+    color: #000; /* Texte noir */
+    text-decoration: none;
+    padding: 5px 15px; /* Espacement plus grand autour du texte */
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border-radius: 5px; /* Bords arrondis */
+    position: relative; /* Ajout de position relative */
+}
+
+.navbar a:hover {
+    background-color: transparent; /* Supprime le fond gris au survol */
+}
+
+.navbar a:hover::after {
+    content: ''; /* Ajout de contenu vide */
+    position: absolute; /* Positionnement absolu */
+    bottom: 0; /* En bas de l'élément */
+    left: 0; /* À gauche de l'élément */
+    width: 100%; /* Largeur de 100% */
+    height: 3px; /* Hauteur de 3px pour le trait bleu */
+    background-color: blue; /* Couleur bleue */
+    border-radius: 3px; /* Bords arrondis pour le trait bleu */
+}
+.navbar a.active {
+    color: blue; /* Couleur bleue pour la page active */
+}
+
+.navbar a.active::after {
+    content: ''; /* Ajout de contenu vide */
+    position: absolute; /* Positionnement absolu */
+    bottom: 0; /* En bas de l'élément */
+    left: 0; /* À gauche de l'élément */
+    width: 100%; /* Largeur de 100% */
+    height: 3px; /* Hauteur de 3px pour le trait bleu */
+    background-color: blue; /* Couleur bleue */
+    border-radius: 3px; /* Bords arrondis pour le trait bleu */
+}
+.hero-section {
+    background-color: #226e93; /* Bleu de l'en-tête de votre page */
+    color: white;
+    padding: 5px;
+    text-align: center;
+    height: auto; /* La hauteur s'adapte au contenu */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+
+.hero-section h2 {
+    font-size: 1.5em; /* Réduit la taille de la police pour les petits écrans */
+    margin: 0 0 5px;
+}
+
+.hero-section p {
+    font-size: 0.8em; /* Réduit la taille de la police pour les petits écrans */
+    margin: 0;
+}
+
+.content-section {
+    padding: 20px 10px; /* Réduit le padding pour les petits écrans */
+    text-align: center;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Réduit l'espace entre les icônes pour les petits écrans */
+    flex-wrap: wrap;
+}
+
+.icon-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s, color 0.3s;
+}
+
+.icon-button:hover {
+    transform: scale(1.05);
+    color: #226e93;
+}
+
+.icon-button img {
+    width: 32px; /* Réduit la taille des icônes pour les petits écrans */
+    height: 32px;
+    margin-bottom: 5px;
+}
+
+.footer {
+    background-color: #212121;
+    color: #b2b2b2;
+    text-align: center;
+    padding: 10px; /* Réduit le padding pour les petits écrans */
+}
+
+/* Styles pour les écrans plus petits */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center; /* Centre les éléments horizontalement sur mobile */
+    }
+    .navbar a {
+        width: auto; /* Largeur automatique pour s'adapter au contenu */
+        text-align: center; /* Texte centré sur mobile */
+        padding: 8px; /* Réduit le padding pour les petits écrans */
+        border-radius: 0; /* Supprime les bords arrondis sur mobile */
+        font-size: 0.8em; /* Réduit la taille de la police de moitié */
+        margin-bottom: 0 ; /* Ajoute une marge en bas pour espacer les liens */
+        display: block; /* Pour que le trait bleu s'adapte à la largeur du contenu */
+    }
+    .navbar a:hover::after,
+    .navbar a.active::after {
+        height: 2px; /* Réduit la hauteur du trait bleu sur mobile */
+        width: 70%; /* Adapte la largeur du trait bleu au contenu */
+        margin: 0 auto; /* Centre le trait bleu */
+    }
+    .hero-section {
+        padding: 20px 10px;
+    }
+    .hero-section h2 {
+        font-size: 1.5em;
+    }
+}
