@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <style>
+      .stroke { fill: none; stroke: #1E4A7B; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .fill-light { fill: #A9C5E8; }
+    </style>
+  </defs>
+  <rect x="8" y="12" width="48" height="40" rx="4" ry="4" class="stroke"/>
+  <circle cx="22" cy="24" r="4" class="stroke fill-light"/>
+  <path d="M12 44l12-14 12 10 10-12 14 16z" class="stroke fill-light"/>
+  <title>Icône Photo/Image</title>
+</svg>
