@@ -128,6 +128,66 @@ body {
     padding: 10px; /* Réduit le padding pour les petits écrans */
 }
 
+.contact-wrap{
+    font-family:Arial,sans-serif;
+    color:#333;
+    max-width:900px;
+    margin:auto
+}
+
+.section{
+    margin:20px 0
+}
+
+.section h2{
+    border-bottom:2px solid #ccc;
+    padding-bottom:5px
+}
+
+.bureau-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:12px
+}
+
+.card{
+    border:1px solid #ddd;
+    border-radius:8px;
+    padding:12px;
+    background:#fafafa
+}
+
+.role{
+    font-weight:bold;
+    color:#005f73
+}
+
+.name{
+    font-size:1.1em;
+    margin-top:6px
+}
+
+.phone{
+    margin-top:4px
+}
+
+.phone a{
+    text-decoration:none;
+    color:#0077cc
+}
+
+.duo{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap
+}
+
+.duo .card{
+    flex:1
+}
+
+
+
 /* Styles pour les écrans plus petits */
 @media (max-width: 768px) {
     .navbar {
@@ -156,3 +216,8 @@ body {
         font-size: 1.5em;
     }
 }
+
+
+
+<head><base target="_blank"><style>
+
