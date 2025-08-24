@@ -154,12 +154,29 @@ body {
     border:1px solid #ddd;
     border-radius:8px;
     padding:12px;
-    background:#fafafa
+    background:#fafafa;
+    text-align: center; /* Centre le contenu des cartes */
 }
+
+/* Style pour la photo de contact */
+.contact-photo {
+  width: 90px; /* Taille de l'image */
+  height: 90px;
+  border-radius: 50%; /* Forme circulaire */
+  object-fit: cover; /* S'assure que l'image couvre toute la zone sans être déformée */
+  border: 2px solid #005f73; /* Bordure autour de l'image, couleur assortie au rôle */
+  margin-bottom: 10px; /* Espace sous l'image */
+  margin-top: 5px; /* Espace au-dessus de l'image */
+  display: block; /* Pour que les marges automatiques fonctionnent pour le centrage */
+  margin-left: auto; /* Centre l'image horizontalement */
+  margin-right: auto; /* Centre l'image horizontalement */
+}
+
 
 .role{
     font-weight:bold;
-    color:#005f73
+    color:#005f73;
+    margin-top: 5px; /* Ajuste la marge pour l'espace entre la photo et le rôle */
 }
 
 .name{
@@ -179,11 +196,13 @@ body {
 .duo{
     display:flex;
     gap:12px;
-    flex-wrap:wrap
+    flex-wrap:wrap;
+    justify-content: center; /* Centre les cartes dans les duos */
 }
 
 .duo .card{
-    flex:1
+    flex:1;
+    min-width: 250px; /* Assure une largeur minimale pour les cartes */
 }
 
 
@@ -215,9 +234,9 @@ body {
     .hero-section h2 {
         font-size: 1.5em;
     }
+
+    .duo .card {
+        flex: none; /* Désactive le flex pour les cartes individuelles sur mobile */
+        width: 100%; /* Les cartes prennent toute la largeur sur mobile */
+    }
 }
-
-
-
-<head><base target="_blank"><style>
-
