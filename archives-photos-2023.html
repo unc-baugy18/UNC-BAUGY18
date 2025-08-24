@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archives Photos 2023 - UNC de Baugy</title>
+
+    <meta name="description" content="Dossiers photos de l'année 2023 de l'Union Nationale des Combattants de BAUGY.">
+
+    <!-- Le fichier style.css externe contient tous les styles de base et les nouveaux styles -->
+    <link rel="stylesheet" href="UNC de Baugy_fichiers/style.css">
+</head>
+<body>
+
+<div class="header" style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div style="display: flex; align-items: center; text-align: center;">
+        <h1 style="font-size:1.2em; line-height:1.3; margin:0; text-align:center; letter-spacing:3px;">
+            Union Nationale<br>
+            des Combattants<br>
+            de BAUGY
+        </h1>
+        <img src="UNC de Baugy_fichiers/logo unc.png" alt="Logo UNC" style="height:60px; margin-left:20px;">
+    </div>
+    <p style="font-size:1em; margin:0; text-align:center;">Le devoir de mémoire, un engagement pour l'avenir.</p>
+</div>
+
+<div class="navbar">
+    <a href="index.html">Accueil</a>
+    <a href="presentation.html">Présentation</a>
+    <a href="magazine.html">Magazine</a>
+    <a href="actualites.html">Actualités</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSftKzOvljhTeNUzij3CgJCsjs0ZR_k9b0PSTW2Opl1pQCTkCg/viewform?usp=header">Adhérer</a>
+    <a href="archives-photos.html" class="active">Photos</a>
+    <a href="contact.html">Contact</a>
+</div>
+
+<div class="contact-wrap"> <!-- Réutilise la classe pour la mise en page générale -->
+  <div class="section" id="folder-view">
+    <h2>Dossiers Photos de l'Année 2023</h2>
+    <div class="bureau-grid"> <!-- Réutilise bureau-grid pour la grille des dossiers -->
+      <!-- Les cartes de dossier seront générées dynamiquement par JavaScript -->
+      <p id="loading-folders" style="text-align: center; padding: 20px;">Chargement des dossiers...</p>
+    </div>
+  </div>
+
+  <div class="section gallery-container" id="gallery-view">
+    <h2 id="gallery-title"></h2>
+    <!-- Le bouton "Retour aux dossiers" est stylisé comme une carte -->
+    <button class="card" onclick="showFolderView()" style="margin-bottom: 20px;">Retour aux dossiers</button>
+
+    <div class="slideshow-container">
+        <!-- Les diapositives seront générées ici par JavaScript -->
+    </div>
+    <br>
+  </div>
+</div>
+
+<!-- Lightbox Modal for enlarged image -->
+<div id="myLightbox" class="lightbox-modal" style="display: none;">
+  <span class="close-lightbox" onclick="closeLightBox()">&times;</span>
+  <img class="lightbox-content" id="img01">
+</div>
+
+
+<div class="footer">
+    <p>&copy; 2025 UNC de Baugy. Tous droits réservés.</p>
+</div>
+
+<script>
+    // --- CONFIGURATION GOOGLE SHEETS ---
+    // IMPORTANT : Remplacez 'VOTRE_CLE_API_GOOGLE' par votre clé API Google Cloud.
+    // Cette clé est nécessaire pour accéder publiquement à votre feuille de calcul.
+    // Assurez-vous que l'API Google Sheets est activée dans votre console Cloud.
+    const GOOGLE_SHEET_API_KEY = 'VOTRE_CLE_API_GOOGLE'; // <--- REMPLACEZ CECI
+
+    // IMPORTANT : Remplacez 'VOTRE_ID_DE_FEUILLE_GOOGLE' par l'ID de votre Google Sheet.
+    // L'ID se trouve dans l'URL de votre feuille, entre /d/ et /edit.
+    // Exemple d'URL : https://docs.google.com/spreadsheets/d/VOTRE_ID_DE_FEUILLE_GOOGLE/edit#gid=0
+    const GOOGLE_SHEET_ID = 'VOTRE_ID_DE_FEUILLE_GOOGLE'; // <--- REMPLACEZ CECI
+
+    // Nom de la plage de données dans votre feuille (ex: 'Feuil1!A:E' pour les colonnes A à E de la feuille 1)
+    // Assurez-vous que les colonnes dans votre Google Sheet correspondent à : Annee, Dossier, Nom_Photo, Source_Drive, Legende
+    const GOOGLE_SHEET_RANGE = 'Feuil1!A:E'; 
+
+    // Année de la page actuelle. À adapter si vous avez plusieurs pages par année.
+    // Pour cette page d'exemple "archives-photos-2023.html", nous utilisons 2023.
+    const CURRENT_YEAR = 2023; 
+
+    // --- Simulation des données Google Drive (utilisé comme fallback si Google Sheets échoue) ---
+    // Ces données seront utilisées si la récupération depuis Google Sheets échoue, ou si les clés de configuration sont manquantes.
+    let folderImages = {
+        "Cérémonie du 11 Novembre": [
+            { src: "https://placehold.co/800x600/226e93/ffffff?text=11_NOV_PHOTO_1", caption: "Photo 1 de la Cérémonie du 11 Novembre" },
+            { src: "https://placehold.co/800x600/005f73/ffffff?text=11_NOV_PHOTO_2", caption: "Photo 2 de la Cérémonie du 11 Novembre" },
+            { src: "https://placehold.co/800x600/0077cc/ffffff?text=11_NOV_PHOTO_3", caption: "Photo 3 de la Cérémonie du 11 Novembre" }
+        ],
+        "Assemblée Générale": [
+            { src: "https://placehold.co/800x600/f8f8f8/333333?text=AG_PHOTO_1", caption: "Photo 1 de l'Assemblée Générale" },
+            { src: "https://placehold.co/800x600/ddd/333333?text=AG_PHOTO_2", caption: "Photo 2 de l'Assemblée Générale" },
+            { src: "https://placehold.co/800x600/ccc/333333?text=AG_PHOTO_3", caption: "Photo 3 de l'Assemblée Générale" },
+            { src: "https://placehold.co/800x600/bbb/333333?text=AG_PHOTO_4", caption: "Photo 4 de l'Assemblée Générale" }
+        ],
+        "Sortie Annuelle": [
+            { src: "https://placehold.co/800x600/226e93/ffffff?text=SORTIE_PHOTO_1", caption: "Photo 1 de la Sortie Annuelle" },
+            { src: "https://placehold.co/800x600/005f73/ffffff?text=SORTIE_PHOTO_2", caption: "Photo 2 de la Sortie Annuelle" }
+        ],
+        "Réunion Mensuelle": [
+            { src: "https://placehold.co/800x600/0077cc/ffffff?text=REUNION_PHOTO_1", caption: "Photo 1 de la Réunion Mensuelle" }
+        ]
+    };
+
+    let slideIndex = 1; // Index de la diapositive actuelle
+    let currentGalleryImages = []; // Images de la galerie actuellement affichée
+
+    const folderView = document.getElementById('folder-view');
+    const folderGrid = folderView.querySelector('.bureau-grid');
+    const loadingFoldersMessage = document.getElementById('loading-folders');
+    const galleryView = document.getElementById('gallery-view');
+    const galleryTitle = document.getElementById('gallery-title');
+    const slideshowContainer = galleryView.querySelector('.slideshow-container');
+    const lightboxModal = document.getElementById('myLightbox');
+    const lightboxImg = document.getElementById('img01');
+
+    // --- Fonctions de navigation entre la vue des dossiers et la vue de la galerie ---
+    function showFolderView() {
+        folderView.style.display = 'block';
+        galleryView.style.display = 'none';
+        // Réinitialiser le diaporama si nécessaire
+        slideshowContainer.innerHTML = '';
+        currentGalleryImages = [];
+        slideIndex = 1;
+        // Re-afficher les cartes de dossiers si elles étaient cachées
+        renderFolderCards();
+    }
+
+    function showGalleryView(folderName) {
+        // Cacher la vue des dossiers et afficher la vue de la galerie
+        folderView.style.display = 'none';
+        galleryView.style.display = 'block';
+        galleryTitle.textContent = `Photos du dossier : ${folderName}`;
+
+        // Charger les images pour le dossier sélectionné
+        currentGalleryImages = folderImages[folderName] || [];
+
+        // Si des images sont trouvées, construire le diaporama
+        if (currentGalleryImages.length > 0) {
+            slideshowContainer.innerHTML = ''; // Nettoyer l'ancien diaporama
+            currentGalleryImages.forEach((img, index) => {
+                const slideDiv = document.createElement('div');
+                slideDiv.classList.add('mySlides', 'fade');
+
+                const numberSpan = document.createElement('div');
+                numberSpan.classList.add('numbertext');
+                numberSpan.textContent = `${index + 1} / ${currentGalleryImages.length}`;
+                slideDiv.appendChild(numberSpan);
+
+                const imgElement = document.createElement('img');
+                imgElement.src = img.src;
+                imgElement.alt = img.caption;
+                imgElement.onclick = () => openLightBox(img.src); // Ouvre la lightbox au clic
+                slideDiv.appendChild(imgElement);
+
+                const captionDiv = document.createElement('div');
+                captionDiv.classList.add('text');
+                captionDiv.textContent = img.caption;
+                slideDiv.appendChild(captionDiv);
+
+                slideshowContainer.appendChild(slideDiv);
+            });
+
+            // Ajouter les boutons de navigation du diaporama
+            const prevButton = document.createElement('a');
+            prevButton.classList.add('prev');
+            prevButton.innerHTML = '&#10094;'; // Flèche gauche
+            prevButton.onclick = () => plusSlides(-1);
+            slideshowContainer.appendChild(prevButton);
+
+            const nextButton = document.createElement('a');
+            nextButton.classList.add('next');
+            nextButton.innerHTML = '&#10095;'; // Flèche droite
+            nextButton.onclick = () => plusSlides(1);
+            slideshowContainer.appendChild(nextButton);
+
+            showSlides(1); // Afficher la première diapositive
+        } else {
+            slideshowContainer.innerHTML = '<p style="text-align: center; padding: 20px;">Aucune photo trouvée pour ce dossier.</p>';
+        }
+    }
+
+    // --- Fonctions du diaporama ---
+    function plusSlides(n) {
+        showSlides(slideIndex += n);
+    }
+
+    function currentSlide(n) {
+        showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+        const slides = slideshowContainer.getElementsByClassName("mySlides");
+        if (slides.length === 0) return;
+
+        if (n > slides.length) {slideIndex = 1}
+        if (n < 1) {slideIndex = slides.length}
+        for (let i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slides[slideIndex-1].style.display = "block";
+    }
+
+    // --- Fonctions de la Lightbox (agrandissement de photo) ---
+    function openLightBox(imgSrc) {
+        lightboxModal.style.display = "flex"; /* Utilise flex pour centrer */
+        lightboxImg.src = imgSrc;
+    }
+
+    function closeLightBox() {
+        lightboxModal.style.display = "none";
+    }
+
+    // --- Récupération des données depuis Google Sheets ---
+    async function fetchGoogleSheetData() {
+        // Vérifie si les clés de configuration sont fournies
+        if (GOOGLE_SHEET_API_KEY === 'VOTRE_CLE_API_GOOGLE' || GOOGLE_SHEET_ID === 'VOTRE_ID_DE_FEUILLE_GOOGLE' || !GOOGLE_SHEET_API_KEY || !GOOGLE_SHEET_ID) {
+            console.error("Clé API Google Sheet ou ID de feuille Google Sheets manquant ou non remplacé. Veuillez configurer les constantes GOOGLE_SHEET_API_KEY et GOOGLE_SHEET_ID dans le script.");
+            loadingFoldersMessage.textContent = "Erreur de configuration Google Sheets. Affichage des dossiers de démonstration.";
+            initializeFolderView(); // Utilise les données de fallback
+            return;
+        }
+
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${GOOGLE_SHEET_ID}/values/${GOOGLE_SHEET_RANGE}?key=${GOOGLE_SHEET_API_KEY}`;
+
+        try {
+            loadingFoldersMessage.textContent = "Chargement des dossiers depuis Google Sheets...";
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Erreur HTTP: ${response.status}`);
+            }
+            const data = await response.json();
+            
+            if (data.values && data.values.length > 1) { // Vérifie si des données et des en-têtes existent
+                const headers = data.values[0]; // Première ligne est les en-têtes
+                const rows = data.values.slice(1); // Les lignes de données
+
+                const newFolderImages = {};
+                rows.forEach(row => {
+                    const rowData = {};
+                    headers.forEach((header, index) => {
+                        rowData[header] = row[index];
+                    });
+
+                    // Filtrer par l'année actuelle (CURRENT_YEAR)
+                    if (parseInt(rowData.Annee) === CURRENT_YEAR) {
+                        const folderName = rowData.Dossier;
+                        if (folderName && rowData.Source_Drive) {
+                            if (!newFolderImages[folderName]) {
+                                newFolderImages[folderName] = [];
+                            }
+                            newFolderImages[folderName].push({
+                                src: rowData.Source_Drive,
+                                caption: rowData.Legende || rowData.Nom_Photo // Utilise la légende ou le nom de la photo
+                            });
+                        }
+                    }
+                });
+                folderImages = newFolderImages; // Met à jour les données de folderImages
+                console.log("Données Google Sheets chargées avec succès.", folderImages);
+                loadingFoldersMessage.style.display = 'none'; // Cacher le message de chargement après succès
+            } else {
+                console.warn("Aucune donnée valide trouvée dans la feuille Google Sheet.");
+                loadingFoldersMessage.textContent = "Aucune donnée trouvée dans Google Sheets. Affichage des dossiers de démonstration.";
+            }
+        } catch (error) {
+            console.error("Erreur lors de la récupération des données de Google Sheet:", error);
+            loadingFoldersMessage.textContent = `Erreur de chargement depuis Google Sheets: ${error.message}. Affichage des dossiers de démonstration.`;
+        } finally {
+            initializeFolderView(); // Initialise la vue avec les données chargées (ou de fallback)
+        }
+    }
+
+    // --- Rendu des cartes de dossiers ---
+    function renderFolderCards() {
+        folderGrid.innerHTML = ''; // Nettoyer la grille actuelle
+
+        const uniqueFolders = Object.keys(folderImages);
+        if (uniqueFolders.length > 0) {
+            uniqueFolders.forEach(folderName => {
+                const cardLink = document.createElement('a');
+                cardLink.href = "#"; // Empêche le comportement de lien par défaut
+                cardLink.classList.add('card', 'folder-card');
+                cardLink.dataset.folder = folderName; // Stocke le nom du dossier pour le clic
+
+                cardLink.innerHTML = `
+                    <img src="UNC de Baugy_fichiers/photos/folder-icon.png" alt="Icone Dossier" class="folder-icon" onerror="this.onerror=null;this.src='https://placehold.co/90x90/ccddff/000000?text=Dossier';">
+                    <div class="folder-name">${folderName}</div>
+                    <div class="folder-description">${folderImages[folderName].length} photos</div>
+                `;
+                cardLink.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    showGalleryView(folderName);
+                });
+                folderGrid.appendChild(cardLink);
+            });
+            // Si des cartes sont rendues, le message de chargement doit être caché par `fetchGoogleSheetData` ou ici
+            // loadingFoldersMessage.style.display = 'none'; // Commenté car déjà géré dans fetchGoogleSheetData
+        } else {
+            folderGrid.innerHTML = '<p style="text-align: center; padding: 20px;">Aucun dossier de photos disponible pour cette année.</p>';
+            loadingFoldersMessage.style.display = 'none'; // Cacher le message de chargement même s'il n'y a pas de dossiers
+        }
+    }
+
+    // --- Initialisation de la vue des dossiers après chargement des données ---
+    function initializeFolderView() {
+        renderFolderCards();
+        showFolderView(); // S'assure que la vue des dossiers est affichée
+    }
+
+    // --- Initialisation et événements au chargement du DOM ---
+    document.addEventListener('DOMContentLoaded', async () => {
+        await fetchGoogleSheetData(); // Tente de charger les données depuis Google Sheets
+        
+        // Fermer la lightbox si l'utilisateur clique en dehors de l'image (sur le fond)
+        lightboxModal.addEventListener('click', (event) => {
+            if (event.target === lightboxModal) {
+                closeLightBox();
+            }
+        });
+
+        // Fermer la lightbox avec la touche Échap
+        document.addEventListener('keydown', (event) => {
+            if (event.key === "Escape" && lightboxModal.style.display === "flex") {
+                closeLightBox();
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

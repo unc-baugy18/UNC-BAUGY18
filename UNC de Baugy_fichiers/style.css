@@ -52,6 +52,7 @@ body {
     background-color: blue; /* Couleur bleue */
     border-radius: 3px; /* Bords arrondis pour le trait bleu */
 }
+
 .navbar a.active {
     color: blue; /* Couleur bleue pour la page active */
 }
@@ -66,6 +67,7 @@ body {
     background-color: blue; /* Couleur bleue */
     border-radius: 3px; /* Bords arrondis pour le trait bleu */
 }
+
 .hero-section {
     background-color: #226e93; /* Bleu de l'en-tête de votre page */
     color: white;
@@ -128,86 +130,259 @@ body {
     padding: 10px; /* Réduit le padding pour les petits écrans */
 }
 
-.contact-wrap{
-    font-family:Arial,sans-serif;
-    color:#333;
-    max-width:900px;
-    margin:auto
+.contact-wrap {
+    font-family: Arial, sans-serif;
+    color: #333;
+    max-width: 900px;
+    margin: auto;
 }
 
-.section{
-    margin:20px 0
+.section {
+    margin: 20px 0;
 }
 
-.section h2{
-    border-bottom:2px solid #ccc;
-    padding-bottom:5px
+.section h2 {
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 5px;
 }
 
-.bureau-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:12px
+.bureau-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
 }
 
-.card{
-    border:1px solid #ddd;
-    border-radius:8px;
-    padding:12px;
-    background:#fafafa;
-    text-align: center; /* Centre le contenu des cartes */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    background: #fafafa;
+    text-align: center;
+    text-decoration: none; /* Pour les liens transformés en cartes */
+    color: inherit; /* Hérite de la couleur du texte */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Effet de survol */
+    display: flex; /* Utilise flexbox pour l'alignement interne */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Légère élévation au survol */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Ombre au survol */
 }
 
 /* Style pour la photo de contact */
 .contact-photo {
-  width: 90px; /* Taille de l'image */
-  height: 90px;
-  border-radius: 50%; /* Forme circulaire */
-  object-fit: cover; /* S'assure que l'image couvre toute la zone sans être déformée */
-  border: 2px solid #005f73; /* Bordure autour de l'image, couleur assortie au rôle */
-  margin-bottom: 10px; /* Espace sous l'image */
-  margin-top: 5px; /* Espace au-dessus de l'image */
-  display: block; /* Pour que les marges automatiques fonctionnent pour le centrage */
-  margin-left: auto; /* Centre l'image horizontalement */
-  margin-right: auto; /* Centre l'image horizontalement */
+    width: 90px; /* Taille de l'image */
+    height: 90px;
+    border-radius: 50%; /* Forme circulaire */
+    object-fit: cover; /* S'assure que l'image couvre toute la zone sans être déformée */
+    border: 2px solid #005f73; /* Bordure autour de l'image, couleur assortie au rôle */
+    margin-bottom: 10px; /* Espace sous l'image */
+    margin-top: 5px; /* Espace au-dessus de l'image */
+    display: block; /* Pour que les marges automatiques fonctionnent pour le centrage */
+    margin-left: auto; /* Centre l'image horizontalement */
+    margin-right: auto; /* Centre l'image horizontalement */
 }
 
-
-.role{
-    font-weight:bold;
-    color:#005f73;
+.role {
+    font-weight: bold;
+    color: #005f73;
     margin-top: 5px; /* Ajuste la marge pour l'espace entre la photo et le rôle */
 }
 
-.name{
-    font-size:1.1em;
-    margin-top:6px
+.name {
+    font-size: 1.1em;
+    margin-top: 6px;
 }
 
-.phone{
-    margin-top:4px
+.phone {
+    margin-top: 4px;
 }
 
-.phone a{
-    text-decoration:none;
-    color:#0077cc
+.phone a {
+    text-decoration: none;
+    color: #0077cc;
 }
 
-.duo{
-    display:flex;
-    gap:12px;
-    flex-wrap:wrap;
+.duo {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
     justify-content: center; /* Centre les cartes dans les duos */
 }
 
-.duo .card{
-    flex:1;
+.duo .card {
+    flex: 1;
     min-width: 250px; /* Assure une largeur minimale pour les cartes */
 }
 
+/* Styles pour les cartes d'années et de dossiers */
+.year-card, .folder-card {
+    /* Les styles génériques .card ci-dessus s'appliquent */
+    padding: 20px; /* Plus de padding pour les années/dossiers */
+    text-align: center;
+}
+
+.year-label {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #005f73;
+    margin-top: 10px;
+}
+
+.folder-icon {
+    width: 90px;
+    height: 90px;
+    object-fit: contain; /* Ajuste l'icône sans la recadrer */
+    margin-bottom: 10px;
+}
+
+.folder-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin-top: 5px;
+}
+
+.folder-description {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 5px;
+}
 
 
-/* Styles pour les écrans plus petits */
+/* Styles spécifiques pour le diaporama et la lightbox */
+.gallery-container {
+    display: none; /* Initiallement caché */
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 20px;
+    max-width: 900px; /* Limite la largeur du conteneur de la galerie */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slideshow-container {
+    position: relative;
+    max-width: 800px; /* Taille maximale pour le diaporama */
+    margin: auto;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden; /* Important pour les bords arrondis des images */
+}
+
+.mySlides {
+    display: none;
+    text-align: center;
+}
+
+.mySlides img {
+    width: 100%; /* Ajuste la largeur de l'image au conteneur */
+    height: auto;
+    max-height: 500px; /* Limite la hauteur des images du diaporama */
+    object-fit: contain; /* Assure que l'image est entièrement visible sans recadrage */
+    border-bottom: 1px solid #eee;
+    cursor: pointer; /* Indique que l'image est cliquable */
+    display: block; /* Supprime l'espace sous l'image */
+}
+
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px; /* Centre verticalement les flèches */
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0,0,0,0.6); /* Légèrement plus transparent pour le fond */
+}
+
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8); /* Plus opaque au survol */
+}
+
+.text {
+    color: #f2f2f2;
+    font-size: 15px;
+    padding: 8px 12px;
+    position: absolute;
+    bottom: 0; /* Positionné en bas du conteneur */
+    width: 100%;
+    text-align: center;
+    background-color: rgba(0,0,0,0.5);
+    box-sizing: border-box; /* Inclut le padding dans la largeur */
+}
+
+.numbertext {
+    color: #f2f2f2;
+    font-size: 12px;
+    padding: 8px 12px;
+    position: absolute;
+    top: 0;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 8px 0 8px 0; /* Bords arrondis pour le coin en haut à gauche */
+}
+
+/* Lightbox (Modal) */
+.lightbox-modal {
+    display: none; /* Caché par défaut */
+    position: fixed; /* Reste au-dessus de tout */
+    z-index: 1000; /* Plus haut que les autres éléments */
+    left: 0;
+    top: 0;
+    width: 100%; /* Pleine largeur */
+    height: 100%; /* Pleine hauteur */
+    overflow: auto; /* Permet le défilement si l'image est trop grande */
+    background-color: rgba(0,0,0,0.9); /* Fond semi-transparent noir */
+    justify-content: center; /* Centre horizontalement le contenu */
+    align-items: center; /* Centre verticalement le contenu */
+    padding-top: 20px; /* Ajoute un peu de padding pour ne pas coller au bord haut */
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    max-width: 95%; /* Légèrement plus grand pour mieux utiliser l'espace */
+    max-height: 95%; /* Idem */
+    object-fit: contain; /* S'assure que l'image est entièrement visible */
+    border-radius: 8px; /* Bords arrondis pour l'image agrandie */
+    box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Ombre légère */
+}
+
+.close-lightbox {
+    position: absolute;
+    top: 10px; /* Ajusté pour laisser un peu plus d'espace */
+    right: 25px; /* Ajusté */
+    color: #f1f1f1;
+    font-size: 50px; /* Un peu plus grand pour faciliter le clic */
+    font-weight: bold;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.close-lightbox:hover,
+.close-lightbox:focus {
+    color: #ff0000; /* Rouge au survol pour indiquer la fermeture */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -238,5 +413,34 @@ body {
     .duo .card {
         flex: none; /* Désactive le flex pour les cartes individuelles sur mobile */
         width: 100%; /* Les cartes prennent toute la largeur sur mobile */
+    }
+    .slideshow-container {
+        max-width: 100%;
+        /* height: auto; -- Redondant si les images ont déjà height:auto */
+    }
+
+    .prev, .next {
+        padding: 10px;
+        font-size: 14px;
+        margin-top: -15px; /* Ajuste le centrage sur mobile */
+    }
+
+    .mySlides img {
+        max-height: 250px; /* Réduit la hauteur sur mobile */
+        /* width: auto; -- Potentiellement problématique si width:100% est voulu */
+    }
+    
+    .lightbox-content {
+        max-width: 98%; /* Ajusté pour une meilleure utilisation de l'espace sur mobile */
+        max-height: 90%;
+    }
+    
+    .close-lightbox {
+        font-size: 40px; /* Ajusté */
+        top: 5px; /* Ajusté */
+        right: 15px; /* Ajusté */
+    }
+    .gallery-container {
+        padding: 10px; /* Réduit le padding sur mobile */
     }
 }
