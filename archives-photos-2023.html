@@ -9,63 +9,40 @@
 
     <!-- Le fichier style.css externe contient tous les styles de base et les nouveaux styles -->
     <link rel="stylesheet" href="UNC de Baugy_fichiers/style.css">
+    <script src="main.js"></script>
 </head>
 <body>
+    <header></header>
 
-<div class="header" style="display: flex; align-items: center; justify-content: center; flex-direction: column;">
-    <div style="display: flex; align-items: center; text-align: center;">
-        <h1 style="font-size:1.2em; line-height:1.3; margin:0; text-align:center; letter-spacing:3px;">
-            Union Nationale<br>
-            des Combattants<br>
-            de BAUGY
-        </h1>
-        <img src="UNC de Baugy_fichiers/logo unc.png" alt="Logo UNC" style="height:60px; margin-left:20px;">
+    <div class="contact-wrap"> <!-- Réutilise la classe pour la mise en page générale -->
+        <div class="section" id="folder-view">
+            <h2>Dossiers Photos de l'Année 2023</h2>
+                <a class="card" href="archives-photos.html" style="margin-bottom: 0px;display: inline-flex;margin-bottom: 20px;">Retour</a>
+            <div class="bureau-grid"> <!-- Réutilise bureau-grid pour la grille des dossiers -->
+                <!-- Les cartes de dossier seront générées dynamiquement par JavaScript -->
+                <p id="loading-folders" style="text-align: center; padding: 20px;">Chargement des dossiers...</p>
+            </div>
+        </div>
+
+        <div class="section gallery-container" id="gallery-view">
+            <h2 id="gallery-title"></h2>
+            <!-- Le bouton "Retour aux dossiers" est stylisé comme une carte -->
+            <button class="card" onclick="showFolderView()" style="margin-bottom: 20px;">Retour aux dossiers</button>
+
+            <div class="slideshow-container">
+                <!-- Les diapositives seront générées ici par JavaScript -->
+            </div>
+            <br>
+        </div>
     </div>
-    <p style="font-size:1em; margin:0; text-align:center;">Le devoir de mémoire, un engagement pour l'avenir.</p>
-</div>
 
-<div class="navbar">
-    <a href="index.html">Accueil</a>
-    <a href="presentation.html">Présentation</a>
-    <a href="magazine.html">Magazine</a>
-    <a href="actualites.html">Actualités</a>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSftKzOvljhTeNUzij3CgJCsjs0ZR_k9b0PSTW2Opl1pQCTkCg/viewform?usp=header">Adhérer</a>
-    <a href="archives-photos.html" class="active">Photos</a>
-    <a href="contact.html">Contact</a>
-</div>
-
-<div class="contact-wrap"> <!-- Réutilise la classe pour la mise en page générale -->
-  <div class="section" id="folder-view">
-    <h2>Dossiers Photos de l'Année 2023</h2>
-        <a class="card" href="archives-photos.html" style="margin-bottom: 0px;display: inline-flex;margin-bottom: 20px;">Retour</a>
-    <div class="bureau-grid"> <!-- Réutilise bureau-grid pour la grille des dossiers -->
-      <!-- Les cartes de dossier seront générées dynamiquement par JavaScript -->
-      <p id="loading-folders" style="text-align: center; padding: 20px;">Chargement des dossiers...</p>
+    <!-- Lightbox Modal for enlarged image -->
+    <div id="myLightbox" class="lightbox-modal" style="display: none;">
+        <span class="close-lightbox" onclick="closeLightBox()">&times;</span>
+        <img class="lightbox-content" id="img01">
     </div>
-  </div>
 
-  <div class="section gallery-container" id="gallery-view">
-    <h2 id="gallery-title"></h2>
-    <!-- Le bouton "Retour aux dossiers" est stylisé comme une carte -->
-    <button class="card" onclick="showFolderView()" style="margin-bottom: 20px;">Retour aux dossiers</button>
-
-    <div class="slideshow-container">
-        <!-- Les diapositives seront générées ici par JavaScript -->
-    </div>
-    <br>
-  </div>
-</div>
-
-<!-- Lightbox Modal for enlarged image -->
-<div id="myLightbox" class="lightbox-modal" style="display: none;">
-  <span class="close-lightbox" onclick="closeLightBox()">&times;</span>
-  <img class="lightbox-content" id="img01">
-</div>
-
-
-<div class="footer">
-    <p>&copy; 2025 UNC de Baugy. Tous droits réservés.</p>
-</div>
+    <footer></footer>
 
 <script>
     // --- CONFIGURATION GOOGLE SHEETS ---
