@@ -35,24 +35,25 @@
 </div>
 
 <div class="contact-wrap"> <!-- Réutilise la classe pour la mise en page générale -->
-  <div class="section" id="folder-view">
-    <h2>Dossiers Photos de l'Année 2023</h2>
-    <div class="bureau-grid"> <!-- Réutilise bureau-grid pour la grille des dossiers -->
-      <!-- Les cartes de dossier seront générées dynamiquement par JavaScript -->
-      <p id="loading-folders" style="text-align: center; padding: 20px;">Chargement des dossiers...</p>
+    <div class="section" id="folder-view">
+        <h2>Dossiers Photos de l'Année 2023</h2>
+        <a class="card" href="archives-photos.html" style="margin-bottom: 0px;display: inline-flex;margin-bottom: 20px;">Retour</a>
+        <div class="bureau-grid"> <!-- Réutilise bureau-grid pour la grille des dossiers -->
+            <!-- Les cartes de dossier seront générées dynamiquement par JavaScript -->
+            <p id="loading-folders" style="text-align: center; padding: 20px;">Chargement des dossiers...</p>
+        </div>
     </div>
-  </div>
 
-  <div class="section gallery-container" id="gallery-view">
-    <h2 id="gallery-title"></h2>
-    <!-- Le bouton "Retour aux dossiers" est stylisé comme une carte -->
-    <button class="card" onclick="showFolderView()" style="margin-bottom: 20px;">Retour aux dossiers</button>
+    <div class="section gallery-container" id="gallery-view">
+        <h2 id="gallery-title"></h2>
+        <!-- Le bouton "Retour aux dossiers" est stylisé comme une carte -->
+        <button class="card" onclick="showFolderView()" style="margin-bottom: 20px;">Retour aux dossiers</button>
 
-    <div class="slideshow-container">
-        <!-- Les diapositives seront générées ici par JavaScript -->
-    </div>
+        <div class="slideshow-container">
+            <!-- Les diapositives seront générées ici par JavaScript -->
+        </div>
     <br>
-  </div>
+    </div>
 </div>
 
 <!-- Lightbox Modal for enlarged image -->
