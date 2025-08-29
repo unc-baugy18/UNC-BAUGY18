@@ -298,13 +298,14 @@ main {
 }
 
 #role {
-    color:#09035c;
+    color:#005f73;
     font-weight: bold;
     font-size: 1.2em;
 }
 
 #nom {
-    font-size: 0.9em;
+    font-size: 1.1em;
+    color: inherit;
 }
 
 .groupe-indiv {
