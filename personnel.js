@@ -40,8 +40,8 @@ async function afficherPersonnel() {
                     membreCarte.innerHTML = `
                         <img src="${imagePath}" alt="${membre.nom}" class="card-image"/>
                         <div class="card-info">
-                            <p class="card-text">${membre.role}</p>
-                            <p class="card-text">${membre.nom}</p>
+                            <p class="card-text" id="role">${membre.role}</p>
+                            <p class="card-text" id="nom">${membre.nom}</p>
                         </div>
                     `;
                     groupeDiv.appendChild(membreCarte);
@@ -64,8 +64,8 @@ async function afficherPersonnel() {
                 individuelDiv.innerHTML = `
                     <img src="${imagePath}" alt="${membre.nom}" class="card-image"/>
                     <div class="card-info">
-                        <p class="card-text">${membre.role}</p>
-                        <p class="card-text">${membre.nom}</p>
+                        <p class="card-text" id="role">${membre.role}</p>
+                        <p class="card-text" id="nom">${membre.nom}</p>
                     </div>
                 `;
                 bureau_indiv.appendChild(individuelDiv);
@@ -88,7 +88,7 @@ async function afficherPersonnel() {
             membreDiv.innerHTML = `
                 <img src="${imagePath}" alt="${membre.nom}" class="card-image"/>
                 <div class="card-info">
-                    <p class="card-text">${membre.nom}</p>
+                    <p class="card-text" id="nom">${membre.nom}</p>
                 </div>
             `;
             membres_indiv.appendChild(membreDiv);

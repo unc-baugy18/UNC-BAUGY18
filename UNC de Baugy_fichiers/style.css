@@ -297,6 +297,16 @@ main {
     align-items: center;
 }
 
+#role {
+    color:#09035c;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#nom {
+    font-size: 0.9em;
+}
+
 .groupe-indiv {
     display: flex;
     flex-flow: wrap;
