@@ -1,446 +1,336 @@
-body {
+html, body {
+    width: 100%;
+    height: 100%;
     font-family: Arial, sans-serif;
     margin: 0;
+    padding: 0;
     background-color: #f2f2f2;
+    display: flex;
+    flex-direction: column;
+    
 }
 
-.header {
-    background-color: #212121; /* Gris foncé pour la partie supérieure */
+main {
+    justify-content: center;
+    align-items: center;
+  }
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+p {
+    margin: 0;
+}
+
+.top {
+    min-width: 300px;
+    background-color: #212121; 
     color: white;
-    padding: 10px; /* Réduit le padding pour les petits écrans */
+    padding: 10px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.top_flex {
+    display: flex;
+    align-items: center; 
     text-align: center;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 1.5em; /* Réduit la taille de la police pour les petits écrans */
-    letter-spacing: 2px;
+.top_flex h1 {
+    font-size:1.2em;
+    line-height:1.3;
+    margin:0;
+    text-align:center;
+    letter-spacing:3px;
+}
+
+.top_flex img {
+    height:60px; 
+    margin-left:20px;
+}
+
+.top p {
+    font-size:1em;
+    margin:0;
+    text-align:center;
 }
 
 .navbar {
-    background-color: #f8f8f8; /* Fond gris clair */
-    color: #000; /* Texte noir */
     display: flex;
-    justify-content: center; /* Centre les éléments horizontalement */
+    justify-content: center;
     align-items: center;
     padding: 10px 0;
-    flex-wrap: wrap; /* Permet aux éléments de passer à la ligne sur mobile */
-    border-bottom: 1px solid #ddd; /* Ligne de séparation en bas */
+    background-color: transparent;
+    flex-wrap: wrap;
 }
 
 .navbar a {
-    color: #000; /* Texte noir */
+    position: relative;
     text-decoration: none;
-    padding: 5px 15px; /* Espacement plus grand autour du texte */
+    color: #000;
     font-weight: bold;
-    transition: background-color 0.3s;
-    border-radius: 5px; /* Bords arrondis */
-    position: relative; /* Ajout de position relative */
-}
-
-.navbar a:hover {
-    background-color: transparent; /* Supprime le fond gris au survol */
-}
-
-.navbar a:hover::after {
-    content: ''; /* Ajout de contenu vide */
-    position: absolute; /* Positionnement absolu */
-    bottom: 0; /* En bas de l'élément */
-    left: 0; /* À gauche de l'élément */
-    width: 100%; /* Largeur de 100% */
-    height: 3px; /* Hauteur de 3px pour le trait bleu */
-    background-color: blue; /* Couleur bleue */
-    border-radius: 3px; /* Bords arrondis pour le trait bleu */
+    padding: 5px 8px;
+    margin: 0 2px;
+    transition: none;
 }
 
 .navbar a.active {
-    color: blue; /* Couleur bleue pour la page active */
+    color: blue;
+}
+
+.navbar a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: blue;
+    transition: left 0.3s ease, right 0.3s ease, width 0.3s ease;
+}
+
+.navbar a:hover::after,
+.navbar a.active::after {
+    left: 5%;
+    right: 5%;
+    width: 90%;
 }
 
 .navbar a.active::after {
-    content: ''; /* Ajout de contenu vide */
-    position: absolute; /* Positionnement absolu */
-    bottom: 0; /* En bas de l'élément */
-    left: 0; /* À gauche de l'élément */
-    width: 100%; /* Largeur de 100% */
-    height: 3px; /* Hauteur de 3px pour le trait bleu */
-    background-color: blue; /* Couleur bleue */
-    border-radius: 3px; /* Bords arrondis pour le trait bleu */
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    right: 5%;
+    width: 90%;
+    height: 2px;
+    background-color: blue;
+}
+
+
+main {
+    display: flex;
+    overflow: visible;
+    width: 100%;
+    height: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    flex-flow: column;
+    place-content: flex-start;
+    align-items: center;
+    gap: 0px;
+    background-color: rgb(242, 242, 242);
+    object-fit: fill;
+    flex-grow: 1;
 }
 
 .hero-section {
-    background-color: #226e93; /* Bleu de l'en-tête de votre page */
-    color: white;
-    padding: 5px;
-    text-align: center;
-    height: auto; /* La hauteur s'adapte au contenu */
+    overflow: hidden;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-}
-
-.hero-section h2 {
-    font-size: 1.5em; /* Réduit la taille de la police pour les petits écrans */
-    margin: 0 0 5px;
-}
-
-.hero-section p {
-    font-size: 0.8em; /* Réduit la taille de la police pour les petits écrans */
-    margin: 0;
-}
-
-.content-section {
-    padding: 20px 10px; /* Réduit le padding pour les petits écrans */
-    text-align: center;
-}
-
-.buttons-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px; /* Réduit l'espace entre les icônes pour les petits écrans */
-    flex-wrap: wrap;
-}
-
-.icon-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-    color: #333;
-    transition: transform 0.3s, color 0.3s;
-}
-
-.icon-button:hover {
-    transform: scale(1.05);
-    color: #226e93;
-}
-
-.icon-button img {
-    width: 32px; /* Réduit la taille des icônes pour les petits écrans */
-    height: 32px;
-    margin-bottom: 5px;
-}
-
-.footer {
-    background-color: #212121;
-    color: #b2b2b2;
-    text-align: center;
-    padding: 10px; /* Réduit le padding pour les petits écrans */
-}
-
-.contact-wrap {
-    font-family: Arial, sans-serif;
-    color: #333;
-    max-width: 900px;
-    margin: auto;
-}
-
-.section {
-    margin: 20px 0;
-}
-
-.section h2 {
-    border-bottom: 2px solid #ccc;
-    padding-bottom: 5px;
-}
-
-.bureau-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 12px;
-}
-
-.card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 12px;
-    background: #fafafa;
-    text-align: center;
-    text-decoration: none; /* Pour les liens transformés en cartes */
-    color: inherit; /* Hérite de la couleur du texte */
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Effet de survol */
-    display: flex; /* Utilise flexbox pour l'alignement interne */
-    flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.card:hover {
-    transform: translateY(-5px); /* Légère élévation au survol */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Ombre au survol */
+.hero-section img {
+    max-width: 70%;
+    display: block;
+    border-radius: 10px;
 }
 
-/* Style pour la photo de contact */
-.contact-photo {
-    width: 90px; /* Taille de l'image */
-    height: 90px;
-    border-radius: 50%; /* Forme circulaire */
-    object-fit: cover; /* S'assure que l'image couvre toute la zone sans être déformée */
-    border: 2px solid #005f73; /* Bordure autour de l'image, couleur assortie au rôle */
-    margin-bottom: 10px; /* Espace sous l'image */
-    margin-top: 5px; /* Espace au-dessus de l'image */
-    display: block; /* Pour que les marges automatiques fonctionnent pour le centrage */
-    margin-left: auto; /* Centre l'image horizontalement */
-    margin-right: auto; /* Centre l'image horizontalement */
+.announcements-container {
+    margin:20px ;
+    margin-bottom: 0;
 }
 
-.role {
-    font-weight: bold;
-    color: #005f73;
-    margin-top: 5px; /* Ajuste la marge pour l'espace entre la photo et le rôle */
-}
-
-.name {
-    font-size: 1.1em;
-    margin-top: 6px;
-}
-
-.phone {
-    margin-top: 4px;
-}
-
-.phone a {
-    text-decoration: none;
-    color: #0077cc;
-}
-
-.duo {
+.images-container {
+    width: 80%; 
+    max-width: 600px;
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center; /* Centre les cartes dans les duos */
-}
-
-.duo .card {
-    flex: 1;
-    min-width: 250px; /* Assure une largeur minimale pour les cartes */
-}
-
-/* Styles pour les cartes d'années et de dossiers */
-.year-card, .folder-card {
-    /* Les styles génériques .card ci-dessus s'appliquent */
-    padding: 20px; /* Plus de padding pour les années/dossiers */
-    text-align: center;
-}
-
-.year-label {
-    font-size: 1.8em;
-    font-weight: bold;
-    color: #005f73;
-    margin-top: 10px;
-}
-
-.folder-icon {
-    width: 90px;
-    height: 90px;
-    object-fit: contain; /* Ajuste l'icône sans la recadrer */
-    margin-bottom: 10px;
-}
-
-.folder-name {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-    margin-top: 5px;
-}
-
-.folder-description {
-    font-size: 0.9em;
-    color: #666;
-    margin-top: 5px;
-}
-
-
-/* Styles spécifiques pour le diaporama et la lightbox */
-.gallery-container {
-    display: none; /* Initiallement caché */
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    margin-top: 20px;
-    max-width: 900px; /* Limite la largeur du conteneur de la galerie */
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.slideshow-container {
-    position: relative;
-    max-width: 800px; /* Taille maximale pour le diaporama */
-    margin: auto;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden; /* Important pour les bords arrondis des images */
-}
-
-.mySlides {
-    display: none;
-    text-align: center;
-}
-
-.mySlides img {
-    width: 100%; /* Ajuste la largeur de l'image au conteneur */
-    height: auto;
-    max-height: 500px; /* Limite la hauteur des images du diaporama */
-    object-fit: contain; /* Assure que l'image est entièrement visible sans recadrage */
-    border-bottom: 1px solid #eee;
-    cursor: pointer; /* Indique que l'image est cliquable */
-    display: block; /* Supprime l'espace sous l'image */
-}
-
-.prev, .next {
-    cursor: pointer;
-    position: absolute;
-    top: 50%;
-    width: auto;
-    padding: 16px;
-    margin-top: -22px; /* Centre verticalement les flèches */
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    transition: 0.6s ease;
-    border-radius: 0 3px 3px 0;
-    user-select: none;
-    background-color: rgba(0,0,0,0.6); /* Légèrement plus transparent pour le fond */
-}
-
-.next {
-    right: 0;
-    border-radius: 3px 0 0 3px;
-}
-
-.prev:hover, .next:hover {
-    background-color: rgba(0,0,0,0.8); /* Plus opaque au survol */
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 0 auto 10px;
+    
 }
 
 .text {
-    color: #f2f2f2;
-    font-size: 15px;
-    padding: 8px 12px;
-    position: absolute;
-    bottom: 0; /* Positionné en bas du conteneur */
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    background-color: rgba(0,0,0,0.5);
-    box-sizing: border-box; /* Inclut le padding dans la largeur */
+    padding: 50px 10px;
+    width: 80%;
+    max-width: 750px;
+    margin: 0 auto;
+    font-size: max(calc(0.8em + 0.5vw),18px);
 }
 
-.numbertext {
-    color: #f2f2f2;
-    font-size: 12px;
-    padding: 8px 12px;
-    position: absolute;
-    top: 0;
-    background-color: rgba(0,0,0,0.5);
-    border-radius: 8px 0 8px 0; /* Bords arrondis pour le coin en haut à gauche */
+.text p {
+    margin: 0 auto;
+    min-width: 200px;
 }
 
-/* Lightbox (Modal) */
-.lightbox-modal {
-    display: none; /* Caché par défaut */
-    position: fixed; /* Reste au-dessus de tout */
-    z-index: 1000; /* Plus haut que les autres éléments */
-    left: 0;
-    top: 0;
-    width: 100%; /* Pleine largeur */
-    height: 100%; /* Pleine hauteur */
-    overflow: auto; /* Permet le défilement si l'image est trop grande */
-    background-color: rgba(0,0,0,0.9); /* Fond semi-transparent noir */
-    justify-content: center; /* Centre horizontalement le contenu */
-    align-items: center; /* Centre verticalement le contenu */
-    padding-top: 20px; /* Ajoute un peu de padding pour ne pas coller au bord haut */
+.groupes-contacts {
+    display: flex;
+    max-width: 90%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8em;
 }
 
-.lightbox-content {
-    margin: auto;
-    display: block;
-    max-width: 95%; /* Légèrement plus grand pour mieux utiliser l'espace */
-    max-height: 95%; /* Idem */
-    object-fit: contain; /* S'assure que l'image est entièrement visible */
-    border-radius: 8px; /* Bords arrondis pour l'image agrandie */
-    box-shadow: 0 0 20px rgba(0,0,0,0.5); /* Ombre légère */
+.groupes-contacts h1 {
+    display: flex;
+    width: auto;
+    max-width: 500px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
 }
 
-.close-lightbox {
-    position: absolute;
-    top: 10px; /* Ajusté pour laisser un peu plus d'espace */
-    right: 25px; /* Ajusté */
-    color: #f1f1f1;
-    font-size: 50px; /* Un peu plus grand pour faciliter le clic */
-    font-weight: bold;
-    transition: 0.3s;
-    cursor: pointer;
+.groupe {
+    display: flex;
+    overflow: visible;
+    margin-bottom: 10px;
+    padding: 10px;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(204, 204, 204);
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px;
 }
 
-.close-lightbox:hover,
-.close-lightbox:focus {
-    color: #ff0000; /* Rouge au survol pour indiquer la fermeture */
-    text-decoration: none;
-    cursor: pointer;
+.card-role {
+    display: flex;
+    box-sizing: content-box;
+    width: 20svw;
+    min-width: 119px;
+    margin: 0px;
+    padding: 10px;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(204, 204, 204);
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px;
+    transition-property: transform;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        align-items: center; /* Centre les éléments horizontalement sur mobile */
-    }
-    .navbar a {
-        width: auto; /* Largeur automatique pour s'adapter au contenu */
-        text-align: center; /* Texte centré sur mobile */
-        padding: 8px; /* Réduit le padding pour les petits écrans */
-        border-radius: 0; /* Supprime les bords arrondis sur mobile */
-        font-size: 0.8em; /* Réduit la taille de la police de moitié */
-        margin-bottom: 0 ; /* Ajoute une marge en bas pour espacer les liens */
-        display: block; /* Pour que le trait bleu s'adapte à la largeur du contenu */
-    }
-    .navbar a:hover::after,
-    .navbar a.active::after {
-        height: 2px; /* Réduit la hauteur du trait bleu sur mobile */
-        width: 70%; /* Adapte la largeur du trait bleu au contenu */
-        margin: 0 auto; /* Centre le trait bleu */
-    }
-    .hero-section {
-        padding: 20px 10px;
-    }
-    .hero-section h2 {
-        font-size: 1.5em;
+.card-role.-wfp-hover,
+.card-role:hover {
+    transform: scale(1.05);
+}
+
+.card-membre {
+    display: flex;
+    box-sizing: content-box;
+    width: 20svw;
+    min-width: 119px;
+    margin-bottom: 0px;
+    padding: 10px;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: rgb(204, 204, 204);
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px 0px;
+    transition-property: transform;
+    transition-duration: 300ms;
+    transition-timing-function: ease-in-out;
+}
+
+.card-membre.-wfp-hover,
+.card-membre:hover {
+    transform: scale(1.05);
+}
+
+.card-image {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 50%;
+}
+
+.card-text {
+    display: flex;
+    overflow-x: auto;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-info {
+    width: 100%;
+    max-width: max-content;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.groupe-indiv {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+    order: 1;
+    gap: 10px;
+}
+
+footer {
+    background-color: #212121;
+    color: #b2b2b2;
+    text-align: center;
+    padding: 10px;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 479px) {
+    .card-role {
+        height: 20svh;
     }
 
-    .duo .card {
-        flex: none; /* Désactive le flex pour les cartes individuelles sur mobile */
-        width: 100%; /* Les cartes prennent toute la largeur sur mobile */
-    }
-    .slideshow-container {
-        max-width: 100%;
-        /* height: auto; -- Redondant si les images ont déjà height:auto */
+    .card-membre {
+        height: 20svh;
     }
 
-    .prev, .next {
-        padding: 10px;
-        font-size: 14px;
-        margin-top: -15px; /* Ajuste le centrage sur mobile */
+    .card-image {
+        width: 14vw;
+        height: auto;
+        max-width: 100px;
+        margin: 0 10px;
     }
 
-    .mySlides img {
-        max-height: 250px; /* Réduit la hauteur sur mobile */
-        /* width: auto; -- Potentiellement problématique si width:100% est voulu */
-    }
-    
-    .lightbox-content {
-        max-width: 98%; /* Ajusté pour une meilleure utilisation de l'espace sur mobile */
-        max-height: 90%;
-    }
-    
-    .close-lightbox {
-        font-size: 40px; /* Ajusté */
-        top: 5px; /* Ajusté */
-        right: 15px; /* Ajusté */
-    }
-    .gallery-container {
-        padding: 10px; /* Réduit le padding sur mobile */
+    .card-text {
+        padding-left: 5px;
     }
 }
