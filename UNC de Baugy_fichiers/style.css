@@ -442,13 +442,6 @@ color: var(--accent);
 
 /* Image */
 figure { margin: 0; }
-.photo {
-width: 100%;
-display: block;
-border-radius: 12px;
-box-shadow: 0 10px 30px rgba(16,24,40,.10);
-background: #e8ecf3;
-}    
 
 .bouton-retour:hover button{
     transform: translateY(-5px);
