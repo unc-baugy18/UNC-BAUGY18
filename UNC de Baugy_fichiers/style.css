@@ -355,6 +355,10 @@ main {
     text-decoration: none;
 }
 
+a.card-role.photo {
+    min-width: 300px;
+}
+
 .card-title {
     font-size: 1.8em;
     font-weight: bold;
