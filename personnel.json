@@ -1,0 +1,42 @@
+{
+    "bureau": [
+        {
+            "type": "groupe",
+            "membres": [
+                { "image": "bernard-andre.jpg", "role": "Président", "nom": "M. ANDRE Bernard" },
+                { "image": "daniel-coquery.jpg", "role": "1er Vice-président", "nom": "M. COQUERY Daniel" }
+            ]
+        },
+        {
+            "type": "groupe",
+            "membres": [
+                { "image": "celine-pastre.jpg", "role": "Secrétaire", "nom": "Mme PASTRE Céline" },
+                { "image": "jimmy-million.jpg", "role": "Secrétaire adjoint", "nom": "M. MILLION Jimmy" }
+            ]
+        },
+        {
+            "type": "groupe",
+            "membres": [
+                { "image": "jean-marie-mielczarek.jpg", "role": "Trésorier", "nom": "M. MIELCZAREK Jean-Marie" },
+                { "image": "gerard-foulon.jpg", "role": "Trésorier adjoint", "nom": "M. FOULON Gérard" }
+            ]
+        },
+        {
+            "type": "individuel",
+            "membre": {
+                "image": "amandine-osten.jpg",
+                "role": "Responsable Communication",
+                "nom": "Mme OSTEN Amandine"
+            }
+        }
+    ],
+    "membres": [
+        { "image": "jean-jacques-andre.jpg", "nom": "M. ANDRE Jean-Jacques" },
+        { "image": "arsene-alexandre.jpg", "nom": "M. ALEXANDRE Arsène" },
+        { "image": "jerome-mabilat.jpg", "nom": "M. MABILAT Jérôme" },
+        { "image": "alain-duroule.jpg", "nom": "M. DUROULE Alain" },
+        { "image": "joel-joulin.jpg", "nom": "M. JOULIN Joël" },
+        { "image": "alain-poubeau.jpg", "nom": "M. POUBEAU Alain" },
+        { "image": "annette-poubeau.jpg", "nom": "Mme POUBEAU Annette" }
+    ]
+}
