@@ -381,6 +381,80 @@ body {
     text-decoration: none;
     cursor: pointer;
 }
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 48px 20px 80px; }
+
+
+/* Header */
+.kicker {
+font-weight: 800;
+font-size: clamp(20px, 2.4vw, 36px);
+letter-spacing: 0.02em;
+margin: 0 0 14px;
+color: var(--accent);
+}
+.title {
+font-weight: 800;
+font-size: clamp(28px, 3.6vw, 44px);
+line-height: 1.15;
+margin: 0 0 8px;
+}
+.subtitle {
+font-weight: 600;
+font-size: clamp(22px, 2.6vw, 34px);
+color: var(--accent);
+margin: 0 0 28px;
+}
+
+
+/* Layout */
+.grid {
+display: grid;
+grid-template-columns: 1.4fr 1fr; /* texte / image */
+gap: 40px;
+align-items: start;
+}
+
+
+/* Text columns */
+.copy {
+background: transparent;
+}
+
+
+.columns {
+columns: 2 160px; /* 2 colonnes si l’espace le permet */
+column-gap: 30px;
+}
+
+
+.columns p {
+color: var(--muted);
+line-height: 1.7;
+margin: 0 0 14px;
+font-size: clamp(14px, 1.2vw, 17px);
+}
+
+
+/* Drop cap on first paragraph */
+.columns p:first-of-type::first-letter {
+float: left;
+font-weight: 800;
+font-size: 50px;
+line-height: 0.9;
+padding-right: 10px;
+color: var(--accent);
+}
+
+
+/* Image */
+figure { margin: 0; }
+.photo {
+width: 100%;
+display: block;
+border-radius: 12px;
+box-shadow: 0 10px 30px rgba(16,24,40,.10);
+background: #e8ecf3;
+}    
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -442,5 +516,253 @@ body {
     }
     .gallery-container {
         padding: 10px; /* Réduit le padding sur mobile */
+    }
+}
+/* Styles CSS pour la page Magazine UNC de Baugy */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f2f2f2;
+}
+.header {
+    background-color: #212121;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+.header h1 {
+    margin: 0;
+    font-size: 1.2em; /* Ajusté pour la cohérence */
+    letter-spacing: 3px; /* Ajusté pour la cohérence */
+    line-height: 1.3;
+}
+.header p { /* Style ajouté pour le slogan */
+    font-size: 1em;
+    margin: 0;
+    text-align: center;
+}
+.header img { /* Style pour le logo */
+    height: 60px;
+    margin-left: 20px;
+}
+
+.navbar {
+    background-color: #f8f8f8;
+    color: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+    flex-wrap: wrap;
+    border-bottom: 1px solid #ddd;
+}
+.navbar a {
+    color: #000;
+    text-decoration: none;
+    padding: 5px 15px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+    position: relative;
+}
+.navbar a:hover {
+    background-color: transparent;
+}
+.navbar a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: blue;
+    border-radius: 3px;
+}
+.navbar a.active {
+    color: blue;
+}
+.navbar a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: blue;
+    border-radius: 3px;
+}
+.hero-section {
+    background-color: #226e93;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+}
+.hero-section h2 { /* Assurez-vous que ces éléments sont utilisés si vous réintroduisez h2 dans le hero */
+    font-size: 1.5em;
+    margin: 0 0 5px;
+}
+.hero-section p { /* Assurez-vous que ces éléments sont utilisés si vous réintroduisez p dans le hero */
+    font-size: 0.8em;
+    margin: 0;
+}
+.hero-section img {
+    max-width: 70%;
+    height: auto;
+    display: block;
+}
+
+.content-section {
+    padding: 20px 10px;
+    text-align: center;
+}
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.icon-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.3s, color 0.3s;
+}
+.icon-button:hover {
+    transform: scale(1.05);
+    color: #226e93;
+}
+.icon-button img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 5px;
+}
+.announcements-container {
+    margin-top: 20px;
+    text-align: center;
+}
+.announcements-container img {
+    width: 80%;
+    max-width: 600px;
+}
+
+.magazine-section {
+    padding: 20px;
+    text-align: center;
+    max-width: 1200px; /* Limiter la largeur pour une meilleure lisibilité */
+    margin: 20px auto; /* Centrer la section */
+}
+/* Ajustements pour le slider UIkit si nécessaire */
+.uk-slider-items {
+    justify-content: center; /* Centrer les éléments du slider */
+}
+.uk-slider-container {
+    margin-top: 20px;
+}
+.el-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligner les images et le texte vers le haut */
+    height: 100%; /* Assurer que tous les éléments prennent toute la hauteur de la cellule de la grille */
+}
+.el-item a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border-radius: 8px; /* Bords arrondis pour toute la carte */
+    overflow: hidden; /* Assurer que les coins de l'image sont également arrondis */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: #fff;
+    padding-bottom: 10px; /* Espace sous le titre */
+    height: 100%; /* Faire en sorte que la zone cliquable prenne toute la hauteur */
+}
+.el-item a:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+.el-image {
+    width: 160px; /* Largeur fixe pour les images */
+    height: 223px; /* Hauteur fixe pour un aspect cohérent */
+    object-fit: cover; /* Couvrir la zone, recadrer si nécessaire */
+    border-radius: 8px 8px 0 0; /* Coins supérieurs arrondis */
+}
+.el-title {
+    font-size: 1.1em; /* Titre légèrement plus grand */
+    margin-top: 10px; /* Plus d'espace entre l'image et le titre */
+    margin-bottom: 0;
+    font-weight: bold;
+    color: #226e93; /* Couleur thème */
+    text-align: center;
+    padding: 0 10px; /* Espacement pour le texte */
+}
+/* Couleurs des flèches de navigation */
+.el-slidenav svg path {
+    stroke: #226e93 !important; /* Couleur des flèches */
+}
+.el-slidenav:hover svg path {
+    stroke: #0056b3 !important; /* Couleur au survol */
+}
+
+
+.footer {
+    background-color: #212121;
+    color: #b2b2b2;
+    text-align: center;
+    padding: 10px;
+}
+
+/* Ajustements responsifs */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+    }
+    .navbar a {
+        width: auto;
+        text-align: center;
+        padding: 8px;
+        border-radius: 0;
+        font-size: 0.8em;
+        margin-bottom: 0 ;
+        display: block;
+    }
+    .navbar a:hover::after,
+    .navbar a.active::after {
+        height: 2px;
+        width: 70%;
+        margin: 0 auto;
+    }
+    .hero-section {
+        padding: 20px 10px;
+    }
+    .hero-section h2 {
+        font-size: 1.5em;
+    }
+    .magazine-section { /* Ajuster le remplissage pour les petits écrans */
+        padding: 10px;
+        margin: 10px auto;
+    }
+    .uk-slider-items {
+        justify-content: flex-start; /* Aligner à gauche pour un meilleur défilement sur mobile */
+    }
+    .uk-grid-medium { /* Réduire l'espacement sur mobile */
+        gap: 10px;
+    }
+    .el-image {
+        width: 120px; /* Image plus petite sur mobile */
+        height: 167px;
+    }
+    .el-title {
+        font-size: 0.9em; /* Titre plus petit sur mobile */
     }
 }
