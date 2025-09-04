@@ -19,10 +19,10 @@ main {
     flex: 1 1 auto;
   }
 
-img {
+/* img {
     max-width: 100%;
     height: auto;
-}
+} */
 
 p {
     margin: 0;
@@ -341,14 +341,28 @@ main {
     width: 70%;
 }
 
-.groupe-photo img {
-    width: 100px;
-    height: 100px;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
+.photo-event {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px;
+}
+
+#folder-list img {
+    border-radius: 10px;
+}
+
+.image-adaptee {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    width: auto;
+    height: auto;
 }
 
 .photo {
@@ -356,25 +370,11 @@ main {
 }
 
 a.card-role.photo {
-    min-width: 300px;
     width:fit-content;
 }
 
-a.card-role.photo div{
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 50%;
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px;
-}
-
-#events-list a.card-role.photo div iframe{
-    height: 100px;
-    width: auto;
-    margin-top: 10px;
+#dates-list a.card-role.photo, #events-list a.card-role.photo{
+    min-width: 300px;
 }
 
 .groupe-photo a h3 {
@@ -502,11 +502,6 @@ footer {
         height: auto;
         max-width: 100px;
         margin: 0 10px;
-    }
-    
-    #events-list a.card-role.photo div iframe {
-        max-width: none;
-        margin-top: 0;
     }
 
     .card-text {
