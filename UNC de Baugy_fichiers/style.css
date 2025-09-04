@@ -373,6 +373,10 @@ a.card-role.photo {
     width:fit-content;
 }
 
+.placeholder {
+    width: 100%;
+}
+
 #dates-list a.card-role.photo, #events-list a.card-role.photo{
     min-width: 300px;
 }

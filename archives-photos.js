@@ -98,7 +98,7 @@ fetchSheetData().then(() => {
             if (imageLink === "") {
                 eventDiv.innerHTML = `
                 <div class="photo-event">
-                    <img src="https://placehold.co/90x90/aabbcc/ffffff?text=${evennement}" alt="">
+                    <img class="placeholder" src="https://placehold.co/90x90/aabbcc/ffffff?text=${evennement}" alt="">
                 </div>
                 <h3 class="card-title">${decodeURIComponent(evennement)}</h3>`
             } else {
