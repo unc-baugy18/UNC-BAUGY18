@@ -1,4 +1,6 @@
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv"
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv&gid=0";
+// const sheet = "Photos"
+// const sheet = "0";
 const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(sheetURL)}`;
 var globalSheetData;
 // Dans loadSheetData, après avoir rempli globalSheetData :
@@ -104,7 +106,7 @@ fetchSheetData().then(() => {
             } else {
                 eventDiv.innerHTML = `
                 <div class="photo-event">
-                    <img class="image-adaptee" src="https://drive.google.com/thumbnail?id=${imageLink}" alt="⚠️ Image introuvable"></img>
+                    <img class="image-adaptee" src="https://drive.google.com/thumbnail?id=${imageLink}" alt="⚠️ Image introuvable" Access-Control-Allow-Origin></img>
                 </div>
                 <h3 class="card-title">${decodeURIComponent(evennement)}</h3>`
             }
@@ -151,7 +153,7 @@ fetchSheetData().then(() => {
             folderDiv.target = "_blank"
             folderDiv.classList.add('card-photo','photo');
             folderDiv.innerHTML = `
-            <img src="https://drive.google.com/thumbnail?id=${folderName}" alt="⚠️ Image introuvable"></img>
+            <img src="https://drive.google.com/thumbnail?id=${folderName}" alt="⚠️ Image introuvable" Access-Control-Allow-Origin></img>
             `;
             document.getElementById('folder-list').appendChild(folderDiv);
         }
