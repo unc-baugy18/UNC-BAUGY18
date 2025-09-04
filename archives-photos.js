@@ -53,9 +53,9 @@ fetchSheetData().then(() => {
         for (const date of dates) {
             const dateDiv = document.createElement('a');
             dateDiv.href = "";
-            dateDiv.classList.add('card-role','photo');
+            dateDiv.classList.add('card-photo','photo');
             dateDiv.innerHTML = `
-            <img class="card-image" src="https://placehold.co/90x90/aabbcc/ffffff?text=${date}" alt="">
+            <img class="card-date" src="https://placehold.co/90x90/aabbcc/ffffff?text=${date}" alt="">
             <h3 class="card-title">${date}</h3>
             `;
             dateDiv.addEventListener('click', (event) => {
@@ -75,7 +75,7 @@ fetchSheetData().then(() => {
                 if (!(row.event in events)){
                     events[row.event] = "";
                 }
-                if (row.default === "x") {
+                if (row.default.toLowerCase() === "x") {
                     events[row.event] = row.folder;
                 }
             }
@@ -94,7 +94,7 @@ fetchSheetData().then(() => {
         for (const [evennement, imageLink] of Object.entries(events)) {
             const eventDiv = document.createElement('a');
             eventDiv.href = "";
-            eventDiv.classList.add('card-role','photo');
+            eventDiv.classList.add('card-photo','photo');
             if (imageLink === "") {
                 eventDiv.innerHTML = `
                 <div class="photo-event">
@@ -104,7 +104,7 @@ fetchSheetData().then(() => {
             } else {
                 eventDiv.innerHTML = `
                 <div class="photo-event">
-                    <img class="image-adaptee" src="https://drive.google.com/thumbnail?id=${imageLink}" alt=""></img>
+                    <img class="image-adaptee" src="https://drive.google.com/thumbnail?id=${imageLink}" alt="⚠️ Image introuvable"></img>
                 </div>
                 <h3 class="card-title">${decodeURIComponent(evennement)}</h3>`
             }
@@ -149,9 +149,9 @@ fetchSheetData().then(() => {
             const folderDiv = document.createElement('a');
             folderDiv.href = `https://drive.google.com/file/d/${folderName}/view?usp=drive_link`;
             folderDiv.target = "_blank"
-            folderDiv.classList.add('card-role','photo');
+            folderDiv.classList.add('card-photo','photo');
             folderDiv.innerHTML = `
-            <img src="https://drive.google.com/thumbnail?id=${folderName}"></img>
+            <img src="https://drive.google.com/thumbnail?id=${folderName}" alt="⚠️ Image introuvable"></img>
             `;
             document.getElementById('folder-list').appendChild(folderDiv);
         }
