@@ -33,6 +33,8 @@ function parseCSV(csv) {
         event: line[1].trim(),  // Deuxième colonne = événement
         folder: line[3].trim().split('/')[5],  // Quatrième colonne = dossier
         default: line[5].trim()  // Sixième colonne = image par défaut
+        folder: line[3].trim().split('/')[5],  // Quatrième colonne = dossier
+        default: line[5].trim()  // Sixième colonne = image par défaut
       });
     }
   }
@@ -40,6 +42,7 @@ function parseCSV(csv) {
 }
 
 
+fetchSheetData().then(() => {
 fetchSheetData().then(() => {
 
     function displayDates() {
@@ -56,6 +59,7 @@ fetchSheetData().then(() => {
             dateDiv.classList.add('card-photo','photo');
             dateDiv.innerHTML = `
             <img class="card-date" src="https://placehold.co/90x90/aabbcc/ffffff?text=${date}" alt="">
+            <img class="card-date" src="https://placehold.co/90x90/aabbcc/ffffff?text=${date}" alt="">
             <h3 class="card-title">${date}</h3>
             `;
             dateDiv.addEventListener('click', (event) => {
@@ -67,6 +71,20 @@ fetchSheetData().then(() => {
     }
 
     function displayEvents(date) {
+
+        const events = {};
+
+        for (const row of globalSheetData) {
+            if (Number(row.year) === date) {
+                if (!(row.event in events)){
+                    events[row.event] = "";
+                }
+                if (row.default.toLowerCase() === "x") {
+                    events[row.event] = row.folder;
+                }
+            }
+        }
+
 
         const events = {};
 
