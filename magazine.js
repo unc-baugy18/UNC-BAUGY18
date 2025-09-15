@@ -44,7 +44,7 @@ function parseCSV(csv) {
 fetchSheetData().then(() => {
     globalSheetData.sort((a, b) => {
         return parseInt(a.number) - parseInt(b.number);
-    });
+    }).reverse();   // reverse() pour inverser l'ordre des éléments
     globalSheetData = globalSheetData.filter(item => item.link !== "" && item.image !== "");
     
     const carrousselElementsDiv = document.querySelector(".carroussel-elements");
