@@ -1,4 +1,4 @@
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv&gid=0";
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQNDI9KNSE9UEvUXn0Ve66depWoGmbUdiF-EqrCcbRJJSuc6gnHeqnFoSRYs9QSKjqODeJrxsPV2Vr7/pub?output=csv"
 const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(sheetURL)}`;
 var globalSheetData;
 // Dans loadSheetData, après avoir rempli globalSheetData :
@@ -67,34 +67,9 @@ fetchSheetData().then(() => {
     }
 
     function displayEvents(date) {
-
-        const events = {};
-
-        for (const row of globalSheetData) {
-            if (Number(row.year) === date) {
-                if (!(row.event in events)){
-                    events[row.event] = "";
-                }
-                if (row.default.toLowerCase() === "x") {
-                    events[row.event] = row.folder;
-                }
-            }
-        }
-
-
-        const events = {};
-
-        for (const row of globalSheetData) {
-            if (Number(row.year) === date) {
-                if (!(row.event in events)){
-                    events[row.event] = "";
-                }
-                if (row.default.toLowerCase() === "x") {
-                    events[row.event] = row.folder;
-                }
-            }
-        }
-
+        const events = [...new Set(globalSheetData
+            .filter(item => Number(item.year) === date)
+            .map(item => item.event))];
         document.getElementsByClassName('bouton-retour')[0].hidden = false;
         document.getElementById('back').addEventListener('click', () => {
             displayDates();
