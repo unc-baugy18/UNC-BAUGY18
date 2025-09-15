@@ -4,7 +4,9 @@ var globalSheetData;
 // Dans loadSheetData, après avoir rempli globalSheetData :
 
 async function fetchSheetData() {
+    const messageP = document.getElementById("chargement");
     try {
+        messageP.hidden = false
         const response = await fetch(proxyURL,{mode: 'cors'});
         const data = await response.json();
         const sheetContent = data.contents;
@@ -16,7 +18,9 @@ async function fetchSheetData() {
         }
         const decodedCSV = new TextDecoder('utf-8').decode(uint8Array);
         globalSheetData = parseCSV(decodedCSV);
+        // messageP.hidden = true
     } catch (error) {
+        messageP.innerText = `Erreur lors de la récupération des données : ${error}`
         console.error("Erreur lors de la récupération des données :", error);
         globalSheetData = [];
     }

@@ -127,10 +127,10 @@ p {
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 1000px;
 }
 
 .hero-section img {
-    max-width: 70%;
     display: block;
     border-radius: 10px;
 }
@@ -141,10 +141,11 @@ p {
     flex-direction: column;
     align-items: center;
     gap: 20px;
+    max-width: 100%;
 }
 
 .images-container {
-    width: 80%; 
+    width: 100%; 
     max-width: 600px;
     display: flex;
     flex-direction: column;
@@ -324,6 +325,10 @@ p {
     align-items: center;
     order: 1;
     gap: 10px;
+}
+
+#chargement {
+    font-weight: 800;
 }
 
 .card-photo {
