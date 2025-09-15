@@ -673,6 +673,7 @@ footer {
         order: 0;
         width: 100%;
         padding-left:0;
+        margin-left: 0;
     }
     
     .pers-important img.left {
