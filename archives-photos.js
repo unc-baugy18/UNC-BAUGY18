@@ -18,7 +18,7 @@ async function fetchSheetData() {
         }
         const decodedCSV = new TextDecoder('utf-8').decode(uint8Array);
         globalSheetData = parseCSV(decodedCSV);
-        // messageP.hidden = true
+        messageP.hidden = true
     } catch (error) {
         messageP.innerText = `Erreur lors de la récupération des données : ${error}`
         console.error("Erreur lors de la récupération des données :", error);
