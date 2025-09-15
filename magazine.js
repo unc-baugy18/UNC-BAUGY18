@@ -8,7 +8,7 @@ async function fetchSheetData() {
         const response = await fetch(proxyURL,{mode: 'cors'});
         const data = await response.json();
         const sheetContent = data.contents;
-        const base64Match = sheetContent.match(/data:text\/csv;base64,([^"]+)/);
+        const base64Match = sheetContent.match(/data:text\/csv; charset=utf-8;base64,([^"]+)/);
         const base64Data = atob(base64Match[1]);
         const uint8Array = new Uint8Array(base64Data.length);
         for (let i = 0; i < base64Data.length; i++) {
@@ -48,7 +48,7 @@ fetchSheetData().then(() => {
     globalSheetData = globalSheetData.filter(item => item.link !== "" && item.image !== "");
     
     const carrousselElementsDiv = document.querySelector(".carroussel-elements");
-    
+
     globalSheetData.forEach(item => {
         const carrousselCardDiv = document.createElement("a");
         carrousselCardDiv.href = item.link;
