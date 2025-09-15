@@ -9,26 +9,6 @@
     <link rel="icon" type="image/png" href="UNC de Baugy_fichiers/logo unc.png">
     <link rel="stylesheet" href="UNC de Baugy_fichiers/style.css">
     <script src="includeur.js"></script>
-
-    <script>
-            // À compléter
-            const imageFiles = [
-                "annonces/annonce1.png",
-                "annonces/annonce2.png",
-                "annonces/annonce3.png",
-            ];
-
-            function displayImages() {
-                const container = document.getElementById("announcements-container");
-                imageFiles.forEach(file => {
-                    const img = document.createElement("img");
-                    img.classList.add("images-container");
-                    img.src = file;
-                    console.log(img);
-                    container.appendChild(img);
-                });
-            }
-    </script>
 </head>
 <body data-page="acceuil">
     <header></header>
@@ -39,9 +19,50 @@
         </div>
         <h3>Annonces</h3>
         <div id="announcements-container" class="announcements-container"></div>
-        <script>window.onload = displayImages</script>
 
     </main>
+
+    <script>
+        // À compléter
+        const imageFiles = [
+            "annonces/annonce1.png",
+            "annonces/annonce2.png",
+            "annonces/annonce3.png",
+        ];
+
+        function checkImageExists(url, callback) {
+            const img = new Image();
+            img.src = url;
+
+            if (img.complete) {
+                callback(true);
+            } else {
+                img.onload = () => callback(true);
+                img.onerror = () => callback(false);
+            }
+        }
+
+        function displayImages(image) {
+            const container = document.getElementById("announcements-container");
+            const img = document.createElement("img");
+            img.classList.add("images-container");
+            img.src = image;
+            container.appendChild(img);
+        }
+
+        imageFiles.forEach((imagePath) => {
+            checkImageExists(imagePath, (exists) => {
+                if (exists) {
+                    displayImages(imagePath);
+                } else {
+                    console.log(`L'image ${imagePath} n'existe pas.`);
+                }
+            });
+        });
+
+
+
+    </script>
 
     <footer></footer>
 </body>
