@@ -33,8 +33,6 @@ function parseCSV(csv) {
         event: line[1].trim(),  // Deuxième colonne = événement
         folder: line[3].trim().split('/')[5],  // Quatrième colonne = dossier
         default: line[5].trim()  // Sixième colonne = image par défaut
-        folder: line[3].trim().split('/')[5],  // Quatrième colonne = dossier
-        default: line[5].trim()  // Sixième colonne = image par défaut
       });
     }
   }
@@ -42,7 +40,6 @@ function parseCSV(csv) {
 }
 
 
-fetchSheetData().then(() => {
 fetchSheetData().then(() => {
 
     function displayDates() {
@@ -58,7 +55,6 @@ fetchSheetData().then(() => {
             dateDiv.href = "";
             dateDiv.classList.add('card-photo','photo');
             dateDiv.innerHTML = `
-            <img class="card-date" src="https://placehold.co/90x90/aabbcc/ffffff?text=${date}" alt="">
             <img class="card-date" src="https://placehold.co/90x90/aabbcc/ffffff?text=${date}" alt="">
             <h3 class="card-title">${date}</h3>
             `;
