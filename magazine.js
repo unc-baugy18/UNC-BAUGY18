@@ -9,13 +9,11 @@ async function fetchSheetData() {
         const data = await response.json();
         
         const sheetContent = data.contents;
-        
-        // 🚀 CORRECTION DE L'EXPRESSION RÉGULIÈRE :
-        // Capture la chaîne Base64 juste après "base64," (on ignore le "charset=utf-8;" manquant).
-        const base64Match = sheetContent.match(/base64,(.*)/s); 
-
-        if (!base64Match || !base64Match[1]) {
-            throw new Error("Base64 data not found in response contents.");
+        const base64Match = sheetContent.match(/data:text\/csv; charset=utf-8;base64,([^"]+)/);
+        const base64Data = atob(base64Match[1]);
+        const uint8Array = new Uint8Array(base64Data.length);
+        for (let i = 0; i < base64Data.length; i++) {
+            uint8Array[i] = base64Data.charCodeAt(i);
         }
         
         const base64Data = base64Match[1];
@@ -82,10 +80,6 @@ fetchSheetData().then(() => {
     
     // ... Affichage des éléments ...
     const carrousselElementsDiv = document.querySelector(".carroussel-elements");
-    if (carrousselElementsDiv) {
-         carrousselElementsDiv.innerHTML = "";
-    }
-    
     globalSheetData.forEach(item => {
         if (carrousselElementsDiv) {
             const carrousselCardDiv = document.createElement("a");
