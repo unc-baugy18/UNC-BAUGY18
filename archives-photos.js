@@ -81,20 +81,6 @@ fetchSheetData().then(() => {
             }
         }
 
-
-        const events = {};
-
-        for (const row of globalSheetData) {
-            if (Number(row.year) === date) {
-                if (!(row.event in events)){
-                    events[row.event] = "";
-                }
-                if (row.default.toLowerCase() === "x") {
-                    events[row.event] = row.folder;
-                }
-            }
-        }
-
         document.getElementsByClassName('bouton-retour')[0].hidden = false;
         document.getElementById('back').addEventListener('click', () => {
             displayDates();
