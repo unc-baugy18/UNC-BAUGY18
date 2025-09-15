@@ -11,7 +11,7 @@ async function imageExiste(url) {
 // Fonction pour afficher le personnel
 async function afficherPersonnel() {
     try {
-        const reponse = await fetch('personnel.json');
+        const reponse = await fetch('contact.json');
         const { bureau, membres } = await reponse.json();
         const bureau_group = document.getElementById('bureau');
         const bureau_indiv = document.getElementById('bureau-indiv');
