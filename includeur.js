@@ -25,23 +25,62 @@ fetch("./footer.html")
         afficherCompteurVisites();
     });
 
-// Fonction pour afficher le compteur de visites
-function afficherCompteurVisites() {
-    const urlCompteur = "https://hitscounter.dev/api/hit?url=https%3A%2F%2Func-baugy18.fr%2F&label=Nombre+de+visiteur&icon=people-fill&color=%23198754&message=&style=plastic&tz=Europe%2FParis";
-    
-    // Récupérer l'élément HTML où le compteur doit être affiché
-    // Note : On le cherche DANS le pied de page qui vient d'être chargé
-    const conteneurCompteur = document.getElementById("compteur-valeur");
+// La fonction principale qui gère le compteur
+function gererCompteurVisites() {
+    const urlJson = "https://hitscounter.dev/api/hit?output=json&url=https%3A%2F%2Func-baugy18.fr%2F";
+    const compteurElement = document.getElementById("compteur-valeur");
 
-    // S'assurer que le conteneur existe avant de continuer
-    if (conteneurCompteur) {
-        // Créer une nouvelle balise d'image
-        const imageCompteur = document.createElement("img");
-        imageCompteur.src = urlCompteur;
-        imageCompteur.alt = "Compteur de visites";
+    // Clé pour le stockage local
+    const visiteDejaComptee = localStorage.getItem('visiteComptee');
+    const maintenant = new Date().getTime();
 
-        // Vider le contenu "Chargement..." et insérer l'image
-        conteneurCompteur.innerHTML = "";
-        conteneurCompteur.appendChild(imageCompteur);
+    // Vérifie si un "drapeau" de visite a déjà été stocké et s'il est encore valide (par exemple, 24h)
+    // Ici, le drapeau sera valide pour une session de 15 minutes pour l'exemple.
+    if (visiteDejaComptee && (maintenant - visiteDejaComptee) < 900000) { // 900000 ms = 15 minutes
+        // Si la visite a déjà été comptée, on ne fait rien
+        fetch(urlJson)
+            .then(response => response.json())
+            .then(data => {
+                compteurElement.textContent = data.count;
+            })
+            .catch(error => {
+                console.error('Erreur de récupération du compteur JSON :', error);
+            });
+    } else {
+        // C'est une nouvelle session, on incrémente le compteur
+        fetch(urlJson)
+            .then(response => response.json())
+            .then(data => {
+                compteurElement.textContent = data.count;
+                // Stocker la visite pour éviter de re-compter
+                localStorage.setItem('visiteComptee', maintenant);
+            })
+            .catch(error => {
+                console.error('Erreur de récupération du compteur JSON :', error);
+            });
     }
 }
+
+// Adaptez le reste de votre includeur.js pour appeler cette fonction après le chargement du footer
+fetch("./footer.html")
+    .then(response => response.text())
+    .then(data => {
+        document.querySelector("footer").innerHTML = data;
+        gererCompteurVisites();
+    });
+
+// Le reste de votre code de includeur.js pour le header
+fetch("./header.html")
+    .then(response => response.text())
+    .then(data => {
+        document.querySelector("header").innerHTML = data;
+        const currentPage = document.body.getAttribute('data-page');
+        const navLinks = document.querySelectorAll('header a[data-target]');
+        navLinks.forEach(link => {
+            if (link.getAttribute('data-target') === currentPage) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    });
