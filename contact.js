@@ -35,13 +35,23 @@ async function afficherPersonnel() {
                         imagePath = avatarParDefaut;
                     }
 
+                    // Nouveau code qui gère l'affichage de l'email
                     const membreCarte = document.createElement('div');
                     membreCarte.className = 'card-role';
+
+                    let emailLink = '';
+                    // Si le groupe a un attribut 'mail', on crée le lien
+                    if (element.mail) {
+                        emailLink = `<a href="mailto:${element.mail}" class="card-mail">${element.mail}</a>`;
+                    }
+
+                    // On reconstruit le contenu HTML pour inclure le lien
                     membreCarte.innerHTML = `
                         <img src="${imagePath}" alt="${membre.nom}" class="card-image"/>
                         <div class="card-info">
                             <p class="card-text" id="role">${membre.role}</p>
                             <p class="card-text" id="nom">${membre.nom}</p>
+                            ${emailLink}
                         </div>
                     `;
                     groupeDiv.appendChild(membreCarte);

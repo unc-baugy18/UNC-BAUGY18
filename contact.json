@@ -12,14 +12,16 @@
             "membres": [
                 { "image": "celine-pastre.jpg", "role": "Secrétaire", "nom": "Mme PASTRE Céline" },
                 { "image": "jimmy-million.jpg", "role": "Secrétaire adjoint", "nom": "M. MILLION Jimmy" }
-            ]
+            ],
+            "mail": "unc.baugy18.sec@gmail.com"
         },
         {
             "type": "groupe",
             "membres": [
                 { "image": "jean-marie-mielczarek.jpg", "role": "Trésorier", "nom": "M. MIELCZAREK Jean-Marie" },
                 { "image": "gerard-foulon.jpg", "role": "Trésorier adjoint", "nom": "M. FOULON Gérard" }
-            ]
+            ],
+            "mail": "unc.baugy18.tresorier@gmail.com"
         },
         {
             "type": "individuel",
