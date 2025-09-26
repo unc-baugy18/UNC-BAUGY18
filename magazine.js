@@ -41,8 +41,6 @@ async function fetchSheetData() {
         globalSheetData = [];
     }
 }
-// -------------------------------------------------------------------------
-
 
 function parseCSV(csv) {
     const lines = csv.split("\n");
@@ -74,8 +72,6 @@ function parseCSV(csv) {
     }
     return result;
 }
-
-// ... Reste du code (logique d'affichage et de tri) ...
 
 fetchSheetData().then(() => {
     // ... Tri et filtrage ...
