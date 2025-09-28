@@ -452,6 +452,15 @@ p {
     box-sizing: border-box;
 }
 
+.group-pers-important h1 {
+    font-size: 3.5em; /* Vous pouvez ajuster cette valeur */
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+
+
 .group-pers-important h2, .group-pers-important h3  {
     margin: 0;
     font-size: 34px;
