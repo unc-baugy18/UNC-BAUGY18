@@ -1,75 +1,72 @@
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv&gid=0";
-const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(sheetURL)}`;
-var globalSheetData;
+// URL de publication directe en JSON, généralement compatible CORS
+const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=json";
+var globalSheetData; // Conserver la variable globale
 
-// --- FONCTION fetchSheetData CORRIGÉE ---
+
+// --- NOUVELLE FONCTION fetchSheetData POUR JSON DIRECT ---
 async function fetchSheetData() {
     const messageP = document.getElementById("chargement");
     try {
-        messageP.hidden = false
-        const response = await fetch(proxyURL,{mode: 'cors'});
-        const data = await response.json();
+        messageP.hidden = false;
         
-        const sheetContent = data.contents;
+        // 🚨 Changement ici : on utilise l'URL directe, et on attend du JSON
+        const response = await fetch(sheetURL); 
+        const data = await response.json(); 
         
-        // 🚀 CORRECTION DE L'EXPRESSION RÉGULIÈRE : 
-        // Recherche ce qui suit "base64," pour être plus robuste, car "charset=utf-8;" est absent.
-        const base64Match = sheetContent.match(/base64,(.*)/s); 
+        // Le JSON de Google est structuré. Les données de la feuille sont dans 'feed.entry'
+        const rawEntries = data.feed.entry;
+        
+        // Nous allons maintenant formater ces entrées.
+        globalSheetData = parseJSONEntries(rawEntries); 
 
-        if (!base64Match || !base64Match[1]) {
-            throw new Error("Base64 data not found in response contents.");
-        }
-
-        const base64Data = base64Match[1];
-        
-        // --- DÉCODAGE BASE64 EN UTF-8 ---
-        // 1. Décodage Base64 en chaîne binaire brute (Latin-1)
-        const binaryString = atob(base64Data);
-        
-        // 2. Conversion de la chaîne Latin-1 en Array d'octets (Uint8Array)
-        const uint8Array = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-            uint8Array[i] = binaryString.charCodeAt(i);
-        }
-        
-        // 3. Décodage des octets en Texte UTF-8 (Assure la gestion des accents)
-        const decodedCSV = new TextDecoder('utf-8').decode(uint8Array);
-        
-        globalSheetData = parseCSV(decodedCSV);
-        messageP.hidden = true
+        messageP.hidden = true;
     } catch (error) {
-        // Gestion des erreurs DOM : Assurez-vous que l'élément 'messageP' existe.
         if (messageP) {
-            messageP.innerText = `Erreur lors de la récupération des données : ${error.message || error}`
+            // Afficher l'erreur si la récupération échoue
+            messageP.innerText = `Erreur lors de la récupération des données : ${error.message || error}. Veuillez vérifier le lien de votre feuille.`
         }
         console.error("Erreur lors de la récupération des données :", error);
         globalSheetData = [];
     }
 }
-// ------------------------------------------
+// -------------------------------------------------------------
 
-function parseCSV(csv) {
-    const lines = csv.split("\n");
+// --- NOUVELLE FONCTION parseJSONEntries ---
+function parseJSONEntries(entries) {
     const result = [];
-    for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim(); // Trim pour éviter les lignes vides
-        if (line === "") continue; 
+    
+    // Le nom des colonnes sera basé sur vos en-têtes. J'utilise les noms de la capture d'écran.
+    for (const entry of entries) {
+        // Accès aux colonnes par leur nom d'en-tête, en minuscules et sans espaces (gsx$)
         
-        const columns = line.split(",");
+        // Note : Si vos en-têtes (ligne 1 du tableur) ne sont pas 'Année', 'Dossier', etc., 
+        // vous devrez ajuster les clés 'gsx$annee', 'gsx$dossier', 'gsx$sourcedrive', 'gsx$legende'.
         
-        // Vous utilisez les colonnes [0], [1], [3], [5]
-        if (columns.length >= 6) { 
+        const sourceDrive = entry.gsx$sourcedrive ? entry.gsx$sourcedrive.$t.trim() : "";
+        
+        // Assurez-vous que sourceDrive contient le lien avant d'essayer de le splitter
+        let folderId = "";
+        try {
+            if (sourceDrive) {
+                // Splitter le lien pour obtenir l'ID. Ex: .../d/ID_DU_DOSSIER/view...
+                folderId = sourceDrive.split('/d/')[1].split('/')[0];
+            }
+        } catch (e) {
+             console.warn("Erreur de parsing du lien Drive pour une entrée.", sourceDrive);
+        }
+
+        if (entry.gsx$annee && entry.gsx$dossier && sourceDrive) {
             result.push({
-                year: columns[0].trim(), 
-                event: columns[1].trim(), 
-                // Assurez-vous que columns[3] est le lien complet pour que split('/')[5] fonctionne
-                folder: columns[3].trim().split('/')[5], 
-                default: columns[5].trim() 
+                year: entry.gsx$annee.$t.trim(),
+                event: entry.gsx$dossier.$t.trim(),
+                folder: folderId, // Utilisation de l'ID du dossier/fichier
+                default: entry.gsx$legende ? entry.gsx$legende.$t.trim().toLowerCase() : "" 
             });
         }
     }
     return result;
 }
+// -------------------------------------------------------------
 
 fetchSheetData().then(() => {
     // ... Le reste de votre logique d'affichage (displayDates, displayEvents, displayFolder)
