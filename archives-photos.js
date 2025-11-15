@@ -31,42 +31,52 @@ async function fetchSheetData() {
 }
 // -------------------------------------------------------------
 
-// --- NOUVELLE FONCTION parseJSONEntries ---
+// --- FONCTION parseJSONEntries DÉFINITIVE ---
 function parseJSONEntries(entries) {
     const result = [];
     
-    // Le nom des colonnes sera basé sur vos en-têtes. J'utilise les noms de la capture d'écran.
+    // Noms de colonnes de votre Google Sheet : Année, Dossier, Source_Drive, image de référence (colonne F)
     for (const entry of entries) {
-        // Accès aux colonnes par leur nom d'en-tête, en minuscules et sans espaces (gsx$)
         
-        // Note : Si vos en-têtes (ligne 1 du tableur) ne sont pas 'Année', 'Dossier', etc., 
-        // vous devrez ajuster les clés 'gsx$annee', 'gsx$dossier', 'gsx$sourcedrive', 'gsx$legende'.
+        // Clés Google Sheet attendues (tout en minuscules, sans espaces/accents)
+        // Note : J'utilise 'gsx$source_drive' car votre en-tête a un underscore.
+        // J'utilise 'gsx$imagedereference' pour la colonne F (image de référence).
+        const sourceDriveKey = entry.gsx$source_drive; 
+        const eventKey = entry.gsx$dossier;           
+        const yearKey = entry.gsx$annee;              
+        const defaultKey = entry.gsx$imagedereference; 
         
-        const sourceDrive = entry.gsx$sourcedrive ? entry.gsx$sourcedrive.$t.trim() : "";
-        
-        // Assurez-vous que sourceDrive contient le lien avant d'essayer de le splitter
+        // 1. Extraction des valeurs
+        const sourceDrive = sourceDriveKey ? sourceDriveKey.$t.trim() : "";
+        const eventName = eventKey ? eventKey.$t.trim() : "";
+        const yearValue = yearKey ? yearKey.$t.trim() : "";
+        const defaultValue = defaultKey ? defaultKey.$t.trim().toLowerCase() : "";
+
+        // 2. Extraction de l'ID du Drive
         let folderId = "";
         try {
             if (sourceDrive) {
-                // Splitter le lien pour obtenir l'ID. Ex: .../d/ID_DU_DOSSIER/view...
-                folderId = sourceDrive.split('/d/')[1].split('/')[0];
+                // Recherche l'ID entre /d/ et /view.
+                const match = sourceDrive.match(/\/d\/([a-zA-Z0-9_-]+)/);
+                folderId = match ? match[1] : "";
             }
         } catch (e) {
              console.warn("Erreur de parsing du lien Drive pour une entrée.", sourceDrive);
         }
 
-        if (entry.gsx$annee && entry.gsx$dossier && sourceDrive) {
+        // 3. Pousser les données formatées
+        if (yearValue && eventName && sourceDrive) {
             result.push({
-                year: entry.gsx$annee.$t.trim(),
-                event: entry.gsx$dossier.$t.trim(),
-                folder: folderId, // Utilisation de l'ID du dossier/fichier
-                default: entry.gsx$legende ? entry.gsx$legende.$t.trim().toLowerCase() : "" 
+                year: yearValue,
+                event: eventName,
+                folder: folderId, // Contient l'ID du fichier
+                default: defaultValue // Contient 'x' si c'est la photo par défaut de l'événement
             });
         }
     }
     return result;
 }
-// -------------------------------------------------------------
+// ------------------------------------------
 
 fetchSheetData().then(() => {
     // ... Le reste de votre logique d'affichage (displayDates, displayEvents, displayFolder)
