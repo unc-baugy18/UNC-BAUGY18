@@ -68,6 +68,89 @@ p {
     text-align:center;
 }
 
+/* --- STYLES POUR LE SOUS-MENU PHOTOS (DROPDOWN) --- */
+
+/* Conteneur principal du menu déroulant */
+.dropdown {
+    /* Maintient le flux horizontal de la navbar */
+    display: inline-block; 
+    /* Permet de positionner le sous-menu de manière absolue */
+    position: relative; 
+    /* Utilise le même padding que les autres liens pour s'intégrer */
+    padding: 5px 15px; 
+    margin: 0 2px;
+}
+
+/* Le bouton 'Photos ▼' */
+.dropdown .dropbtn {
+    /* Réinitialise les styles du lien de la navbar pour éviter le double padding */
+    padding: 0; 
+    margin: 0;
+}
+
+/* Contenu du sous-menu (les liens d'années) */
+.dropdown-content {
+    /* Caché par défaut */
+    display: none; 
+    /* Positionné absolument sous le bouton 'Photos' */
+    position: absolute; 
+    top: 100%; /* Juste en dessous du bouton parent */
+    left: 0;
+    z-index: 10; /* Assure qu'il est au-dessus des autres éléments */
+    min-width: 180px;
+    background-color: #f8f8f8; /* Le même fond que la navbar */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    border: 1px solid #ddd;
+    border-top: none; /* Enlève la ligne de séparation en haut */
+}
+
+/* Les liens dans le sous-menu */
+.dropdown-content a {
+    /* Supprime les marges de la navbar pour les éléments du sous-menu */
+    margin: 0; 
+    padding: 10px 16px;
+    color: #000;
+    text-decoration: none;
+    display: block; /* Prend toute la largeur disponible */
+    font-weight: normal; /* Moins gras que le menu principal si vous le souhaitez */
+    transition: background-color 0.2s;
+    /* Annule l'effet de soulignement de la navbar pour les sous-liens */
+}
+.dropdown-content a::after {
+    display: none; 
+}
+
+/* Soulignement au survol du lien dans le sous-menu */
+.dropdown-content a:hover {
+    background-color: #e0e0e0;
+}
+
+/* Afficher le menu au survol du conteneur parent */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Réajustement de la navbar pour le conteneur dropdown */
+/* Pour s'assurer que l'effet de survol de la navbar fonctionne sur le bouton dropdown */
+.navbar .dropdown .dropbtn::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; /* Déplacé un peu plus bas que l'original */
+    left: 50%;
+    width: 0;
+    height: 3px;
+    background-color: blue;
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+.navbar .dropdown:hover .dropbtn::after {
+    left: 5%;
+    width: 90%;
+}
+
+
+
+
 .navbar {
     display: flex;
     justify-content: center;
