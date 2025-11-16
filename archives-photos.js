@@ -30,7 +30,6 @@ function getYearFromURL() {
     return DEFAULT_YEAR; 
 }
 
-
 // =========================================================
 // 2. FONCTIONS DE RÉCUPÉRATION (Chargement par GID)
 // =========================================================
@@ -87,31 +86,30 @@ function parseCSV(csv) {
     const result = [];
     const separator = ","; 
 
+    // Définition des index de colonnes mis à jour (basée sur votre nouvelle structure)
+    const ANNEE_INDEX = 0;
+    const DOSSIER_INDEX = 1;
+    const ID_DOSSIER_INDEX = 2; // <-- NOUVELLE COLONNE
+    const IMAGE_REF_INDEX = 7; // <-- L'ancienne colonne [5] est maintenant [7] (si deux colonnes ajoutées)
+
     for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (line === "") continue; 
         
         const columns = line.split(separator); 
         
-        // Colonnes : [0]Annee, [1]Dossier, [3]Source_Drive, [5]Image de référence
-        if (columns.length >= 6) { 
+        // Nous vérifions que nous avons au moins la colonne de l'image de référence
+        if (columns.length >= IMAGE_REF_INDEX + 1) { 
             
-            const sourceDriveURL = columns[3].trim();
-            let folderId = "";
-
-            // Extraction robuste de l'ID du Drive
-            const match = sourceDriveURL.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) {
-                folderId = match[1];
-            } else {
-                console.warn(`Impossible d'extraire l'ID Drive pour l'entrée: ${sourceDriveURL}`);
-            }
-
+            const folderId = columns[ID_DOSSIER_INDEX].trim();
+            
+            // Note: Nous n'avons plus besoin d'extraire l'ID du Drive à partir de l'URL.
+            
             result.push({
-                year: columns[0].trim(), 
-                event: columns[1].trim(), 
-                folder: folderId, 
-                default: columns[5].trim() 
+                year: columns[ANNEE_INDEX].trim(), 
+                event: columns[DOSSIER_INDEX].trim(), 
+                folder: folderId, // Utilise directement l'Id_Dossier de l'index [2]
+                default: columns[IMAGE_REF_INDEX].trim() 
             });
         }
     }
