@@ -86,39 +86,34 @@ function parseCSV(csv) {
     const result = [];
     const separator = ","; 
 
+    // Définition des index de colonnes mis à jour selon votre structure
+    const ANNEE_INDEX = 0;
+    const DOSSIER_INDEX = 1;
+    const ID_DOSSIER_INDEX = 2; // Id_Dossier
+    // Colonnes intermédiaires : [3]Nom_Photo, [4]Source_Drive, [5] et [6] non utilisées/non mentionnées
+    const IMAGE_REF_INDEX = 7;  // Image de référence
+
     for (let i = 1; i < lines.length; i++) {
         const line = lines[i].trim();
         if (line === "") continue; 
         
         const columns = line.split(separator); 
         
-        // Colonnes : [0]Annee, [1]Dossier, [3]Source_Drive, [5]Image de référence
-        if (columns.length >= 6) { 
+        // Nous vérifions que la ligne contient au moins 8 colonnes (index 0 à 7)
+        if (columns.length >= IMAGE_REF_INDEX + 1) { 
             
-            const sourceDriveURL = columns[4].trim();
-            let folderId = "";
-
-            // Extraction robuste de l'ID du Drive
-            const match = sourceDriveURL.match(/\/d\/([a-zA-Z0-9_-]+)/);
-            if (match && match[1]) {
-                folderId = match[1];
-            } else {
-                console.warn(`Impossible d'extraire l'ID Drive pour l'entrée: ${sourceDriveURL}`);
-            }
-
+            const folderId = columns[ID_DOSSIER_INDEX].trim();
+            
             result.push({
-                year: columns[0].trim(), 
-                event: columns[1].trim(), 
-                folder: folderId, 
-                default: columns[6].trim() 
+                year: columns[ANNEE_INDEX].trim(), 
+                event: columns[DOSSIER_INDEX].trim(), 
+                folder: folderId, // Utilise directement l'Id_Dossier de l'index [2]
+                default: columns[IMAGE_REF_INDEX].trim() // Utilise Image de référence de l'index [7]
             });
         }
     }
     return result;
 }
-
-
-
 
 
 
