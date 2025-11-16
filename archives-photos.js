@@ -1,19 +1,79 @@
-const sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv&gid=0";
-const proxyURL = `https://api.allorigins.win/get?url=${encodeURIComponent(sheetURL)}`;
-var globalSheetData;
+// =========================================================
+// 1. CONFIGURATION ET VARIABLES
+// =========================================================
 
-// --- FONCTION fetchSheetData CORRIGÉE ---
+// Mappage des années vers leurs GID d'onglets respectifs
+const GID_MAPPING = {
+    // Année 2025: Nouveau GID
+    2025: '747771106',  
+    
+    // Année 2024: Ancien GID 0
+    2024: '0', 
+};
+
+var globalSheetData;
+const SHEET_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv";
+const PROXY_BASE_URL = "https://api.allorigins.win/get?url=";
+
+
+// Fonction pour récupérer l'année demandée dans l'URL
+function getYearFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const yearParam = urlParams.get('year');
+    
+    if (yearParam) {
+        // Si un paramètre d'année est spécifié, on le retourne.
+        return isNaN(Number(yearParam)) ? null : Number(yearParam);
+    }
+    
+    // Si aucun paramètre n'est spécifié (pas d'Archives Complètes), on retourne 2025 par défaut.
+    return 2025; 
+}
+
+
+// =========================================================
+// 2. FONCTIONS DE RÉCUPÉRATION (Chargement par GID)
+// =========================================================
+
+async function fetchSheetData() {
+    // ...
+    // Déterminer le GID à utiliser
+    const requestedYear = getYearFromURL(); // Renvoie 2025 si URL est vide
+
+    // Utilise le GID de l'année. Si requestedYear n'est pas dans GID_MAPPING (ce qui ne devrait pas arriver
+    // car on force 2025 par défaut), on utilise 2025 comme fallback.
+    const gidToUse = GID_MAPPING[requestedYear] || GID_MAPPING[2025]; 
+
+    // ... le reste de la fonction reste inchangé ...
+}
+
+
+
+
+
+
+
+
 async function fetchSheetData() {
     const messageP = document.getElementById("chargement");
+    
+    // Déterminer le GID à utiliser
+    const requestedYear = getYearFromURL(); // Renvoie 2025 si URL est vide
+    
+    // Utilise le GID de l'année. Si requestedYear n'est pas dans GID_MAPPING (ce qui ne devrait pas arriver
+    // car on force 2025 par défaut), on utilise 2025 comme fallback.
+    const gidToUse = GID_MAPPING[requestedYear] || GID_MAPPING[2025]; 
+
+    // Construire l'URL qui charge l'onglet spécifique (et donc moins de données)
+    const sheetURL = `${SHEET_BASE_URL}&gid=${gidToUse}`;
+    const proxyURL = `${PROXY_BASE_URL}${encodeURIComponent(sheetURL)}`;
+
     try {
         messageP.hidden = false
         const response = await fetch(proxyURL,{mode: 'cors'});
         const data = await response.json();
         
         const sheetContent = data.contents;
-        
-        // 🚀 CORRECTION DE L'EXPRESSION RÉGULIÈRE : 
-        // Recherche ce qui suit "base64," pour être plus robuste, car "charset=utf-8;" est absent.
         const base64Match = sheetContent.match(/base64,(.*)/s); 
 
         if (!base64Match || !base64Match[1]) {
@@ -21,24 +81,18 @@ async function fetchSheetData() {
         }
 
         const base64Data = base64Match[1];
-        
-        // --- DÉCODAGE BASE64 EN UTF-8 ---
-        // 1. Décodage Base64 en chaîne binaire brute (Latin-1)
         const binaryString = atob(base64Data);
         
-        // 2. Conversion de la chaîne Latin-1 en Array d'octets (Uint8Array)
         const uint8Array = new Uint8Array(binaryString.length);
         for (let i = 0; i < binaryString.length; i++) {
             uint8Array[i] = binaryString.charCodeAt(i);
         }
         
-        // 3. Décodage des octets en Texte UTF-8 (Assure la gestion des accents)
         const decodedCSV = new TextDecoder('utf-8').decode(uint8Array);
         
         globalSheetData = parseCSV(decodedCSV);
         messageP.hidden = true
     } catch (error) {
-        // Gestion des erreurs DOM : Assurez-vous que l'élément 'messageP' existe.
         if (messageP) {
             messageP.innerText = `Erreur lors de la récupération des données : ${error.message || error}`
         }
@@ -46,24 +100,36 @@ async function fetchSheetData() {
         globalSheetData = [];
     }
 }
-// ------------------------------------------
 
 function parseCSV(csv) {
     const lines = csv.split("\n");
     const result = [];
+    const separator = ","; 
+
     for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim(); // Trim pour éviter les lignes vides
+        const line = lines[i].trim();
         if (line === "") continue; 
         
-        const columns = line.split(",");
+        const columns = line.split(separator); 
         
-        // Vous utilisez les colonnes [0], [1], [3], [5]
+        // Colonnes : [0]Annee, [1]Dossier, [3]Source_Drive, [5]Image de référence
         if (columns.length >= 6) { 
+            
+            const sourceDriveURL = columns[3].trim();
+            let folderId = "";
+
+            // Extraction robuste de l'ID du Drive
+            const match = sourceDriveURL.match(/\/d\/([a-zA-Z0-9_-]+)/);
+            if (match && match[1]) {
+                folderId = match[1];
+            } else {
+                console.warn(`Impossible d'extraire l'ID Drive pour l'entrée: ${sourceDriveURL}`);
+            }
+
             result.push({
                 year: columns[0].trim(), 
                 event: columns[1].trim(), 
-                // Assurez-vous que columns[3] est le lien complet pour que split('/')[5] fonctionne
-                folder: columns[3].trim().split('/')[5], 
+                folder: folderId, 
                 default: columns[5].trim() 
             });
         }
@@ -71,11 +137,35 @@ function parseCSV(csv) {
     return result;
 }
 
+// =========================================================
+// 3. LOGIQUE D'AFFICHAGE ET DE ROUTAGE (AJUSTÉE)
+// =========================================================
+
 fetchSheetData().then(() => {
-    // ... Le reste de votre logique d'affichage (displayDates, displayEvents, displayFolder)
-    // est inchangé car elle fonctionne sur le `globalSheetData` correctement peuplé.
+    
+    // --- ROUTAGE ---
+    const requestedYear = getYearFromURL();
+
+    if (requestedYear) {
+        // CAS 1: Année spécifique demandée. On affiche directement les événements de cette année.
+        displayEvents(requestedYear); 
+
+        // Le bouton retour renvoie à la liste des dates (mode Archives Complètes) ou à l'accueil
+        document.getElementById('back').addEventListener('click', () => {
+             // Redirection vers la page sans paramètre (qui affichera les années)
+             window.location.href = 'archives-photos.html'; 
+        }, { once: true });
+        
+    } else {
+        // CAS 2: Pas d'année spécifiée. On affiche la liste des années disponibles.
+        displayDates();
+    }
+    // ----------------------
+
 
     function displayDates() {
+        // Cette fonction affiche toutes les années trouvées dans le GID=0 ("Photos 2024" dans ce cas)
+        // Note: Si GID=0 ne contient que 2024, il n'affichera que 2024.
         const dates = [...new Set(globalSheetData.map(item => Number(item.year)))];
         document.getElementsByClassName('bouton-retour')[0].hidden = true;
 
@@ -100,7 +190,7 @@ fetchSheetData().then(() => {
     }
 
     function displayEvents(date) {
-
+        // Filtre les événements pour l'année donnée (même si le GID n'en contient qu'une)
         const events = {};
 
         for (const row of globalSheetData) {
@@ -115,9 +205,16 @@ fetchSheetData().then(() => {
         }
 
         document.getElementsByClassName('bouton-retour')[0].hidden = false;
+        
+        // Réaffectation du bouton retour (nécessaire si l'on revient de displayFolder)
         document.getElementById('back').addEventListener('click', () => {
-            displayDates();
-        })
+            if (requestedYear) {
+                 window.location.href = 'archives-photos.html'; // Retour au menu principal si année fixe
+            } else {
+                 displayDates(); // Retour à la liste des années si Archives Complètes
+            }
+        }, { once: true });
+
 
         document.getElementById('dates-list').innerHTML = '';
         document.getElementById('events-list').innerHTML = '';
@@ -151,12 +248,10 @@ fetchSheetData().then(() => {
         document.querySelectorAll('.image-adaptee').forEach(img => {
             img.onload = function() {
                 if (this.naturalWidth > this.naturalHeight) {
-                // Image en paysage : priorité à la hauteur
                 this.style.height = '100%';
                 this.style.width = 'auto';
                 this.style.maxWidth = 'none';
                 } else {
-                // Image en portrait : priorité à la largeur
                 this.style.width = '100%';
                 this.style.height = 'auto';
                 this.style.maxHeight = 'none';
@@ -167,12 +262,14 @@ fetchSheetData().then(() => {
 
     function displayFolder(date, event) {
         const folder = [...new Set(globalSheetData
-            .filter(item => Number(item.year) === date && item.event === event)
-            .map(item => item.folder))];
+                .filter(item => Number(item.year) === date && item.event === event)
+                .map(item => item.folder))];
         document.getElementsByClassName('bouton-retour')[0].hidden = false;
+        
+        // Le bouton de retour renvoie à la liste des événements de l'année
         document.getElementById('back').addEventListener('click', () => {
             displayEvents(date);
-        })
+        }, { once: true })
         
         document.getElementById('dates-list').innerHTML = '';
         document.getElementById('events-list').innerHTML = '';
@@ -189,6 +286,4 @@ fetchSheetData().then(() => {
             document.getElementById('folder-list').appendChild(folderDiv);
         }
     }
-
-    displayDates();
 })
