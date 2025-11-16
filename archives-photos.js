@@ -1,70 +1,45 @@
 // =========================================================
-// 1. CONFIGURATION ET VARIABLES
+// 1. CONFIGURATION ET VARIABLES (Mettez à jour vos GID ici)
 // =========================================================
 
-// Mappage des années vers leurs GID d'onglets respectifs
+// Mappage des années vers leurs GID d'onglets allégés
 const GID_MAPPING = {
-    // Année 2025: Nouveau GID
-    2025: '747771106',  
+    // 2025 : GID de l'onglet consolidé avec 1 ligne par dossier (moins de 615 lignes)
+    2025: '1867282788', // <--- REMPLACEZ PAR VOTRE GID RÉEL DE L'ONGLET 2025 CONSOLIDÉ
     
-    // Année 2024: Ancien GID 0
+    // 2024 : GID de l'onglet 2024
     2024: '0', 
 };
 
 var globalSheetData;
-const SHEET_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTbO7WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv";
+const DEFAULT_YEAR = 2025; 
+const SHEET_BASE_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSztBiOrLFMqZs_7g2TGdM1UxlnKoTb07WtaQdFiODdqNe9YcVWr_rZx7ojWIqTKzychK_i1DohWD1w/pub?output=csv";
 const PROXY_BASE_URL = "https://api.allorigins.win/get?url=";
 
 
-// Fonction pour récupérer l'année demandée dans l'URL
+// Fonction pour récupérer l'année demandée (retourne 2025 par défaut)
 function getYearFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const yearParam = urlParams.get('year');
     
-    if (yearParam) {
-        // Si un paramètre d'année est spécifié, on le retourne.
-        return isNaN(Number(yearParam)) ? null : Number(yearParam);
+    if (yearParam && !isNaN(Number(yearParam))) {
+        return Number(yearParam);
     }
     
-    // Si aucun paramètre n'est spécifié (pas d'Archives Complètes), on retourne 2025 par défaut.
-    return 2025; 
+    // Année par défaut
+    return DEFAULT_YEAR; 
 }
 
-
 // =========================================================
-// 2. FONCTIONS DE RÉCUPÉRATION (Chargement par GID)
+// 2. FONCTIONS DE RÉCUPÉRATION (Maintient la logique GID / Proxy)
 // =========================================================
-
-async function fetchSheetData() {
-    // ...
-    // Déterminer le GID à utiliser
-    const requestedYear = getYearFromURL(); // Renvoie 2025 si URL est vide
-
-    // Utilise le GID de l'année. Si requestedYear n'est pas dans GID_MAPPING (ce qui ne devrait pas arriver
-    // car on force 2025 par défaut), on utilise 2025 comme fallback.
-    const gidToUse = GID_MAPPING[requestedYear] || GID_MAPPING[2025]; 
-
-    // ... le reste de la fonction reste inchangé ...
-}
-
-
-
-
-
-
-
 
 async function fetchSheetData() {
     const messageP = document.getElementById("chargement");
     
-    // Déterminer le GID à utiliser
-    const requestedYear = getYearFromURL(); // Renvoie 2025 si URL est vide
-    
-    // Utilise le GID de l'année. Si requestedYear n'est pas dans GID_MAPPING (ce qui ne devrait pas arriver
-    // car on force 2025 par défaut), on utilise 2025 comme fallback.
-    const gidToUse = GID_MAPPING[requestedYear] || GID_MAPPING[2025]; 
+    const requestedYear = getYearFromURL(); 
+    const gidToUse = GID_MAPPING[requestedYear] || GID_MAPPING[DEFAULT_YEAR]; 
 
-    // Construire l'URL qui charge l'onglet spécifique (et donc moins de données)
     const sheetURL = `${SHEET_BASE_URL}&gid=${gidToUse}`;
     const proxyURL = `${PROXY_BASE_URL}${encodeURIComponent(sheetURL)}`;
 
@@ -102,6 +77,7 @@ async function fetchSheetData() {
 }
 
 function parseCSV(csv) {
+    // La fonction reste la même car elle lit déjà les colonnes nécessaires
     const lines = csv.split("\n");
     const result = [];
     const separator = ","; 
@@ -118,7 +94,6 @@ function parseCSV(csv) {
             const sourceDriveURL = columns[3].trim();
             let folderId = "";
 
-            // Extraction robuste de l'ID du Drive
             const match = sourceDriveURL.match(/\/d\/([a-zA-Z0-9_-]+)/);
             if (match && match[1]) {
                 folderId = match[1];
@@ -138,81 +113,39 @@ function parseCSV(csv) {
 }
 
 // =========================================================
-// 3. LOGIQUE D'AFFICHAGE ET DE ROUTAGE (AJUSTÉE)
+// 3. LOGIQUE D'AFFICHAGE (Simplifiée)
 // =========================================================
 
 fetchSheetData().then(() => {
     
-    // --- ROUTAGE ---
-    const requestedYear = getYearFromURL();
-
-    if (requestedYear) {
-        // CAS 1: Année spécifique demandée. On affiche directement les événements de cette année.
-        displayEvents(requestedYear); 
-
-        // Le bouton retour renvoie à la liste des dates (mode Archives Complètes) ou à l'accueil
-        document.getElementById('back').addEventListener('click', () => {
-             // Redirection vers la page sans paramètre (qui affichera les années)
-             window.location.href = 'archives-photos.html'; 
-        }, { once: true });
-        
-    } else {
-        // CAS 2: Pas d'année spécifiée. On affiche la liste des années disponibles.
-        displayDates();
-    }
-    // ----------------------
-
-
+    // Le routage est maintenant simple : on va directement à l'affichage des événements
+    // de l'année demandée (qui sont les seuls éléments du fichier CSV chargé).
+    const requestedYear = getYearFromURL(); 
+    displayEvents(requestedYear); 
+    
+    // La fonction displayDates est maintenant inutile car on n'affiche plus la liste des années.
     function displayDates() {
-        // Cette fonction affiche toutes les années trouvées dans le GID=0 ("Photos 2024" dans ce cas)
-        // Note: Si GID=0 ne contient que 2024, il n'affichera que 2024.
-        const dates = [...new Set(globalSheetData.map(item => Number(item.year)))];
-        document.getElementsByClassName('bouton-retour')[0].hidden = true;
-
+        // Laisser vide ou supprimer
         document.getElementById('dates-list').innerHTML = '';
-        document.getElementById('events-list').innerHTML = '';
-        document.getElementById('folder-list').innerHTML = '';
-
-        for (const date of dates) {
-            const dateDiv = document.createElement('a');
-            dateDiv.href = "";
-            dateDiv.classList.add('card-photo','photo');
-            dateDiv.innerHTML = `
-            <img class="card-date" src="https://placehold.co/90x90/aabbcc/ffffff?text=${date}" alt="">
-            <h3 class="card-title">${date}</h3>
-            `;
-            dateDiv.addEventListener('click', (event) => {
-                event.preventDefault();
-                displayEvents(date);
-            })
-            document.getElementById('dates-list').appendChild(dateDiv);
-        }
+        document.getElementsByClassName('bouton-retour')[0].hidden = true;
     }
-
+    
     function displayEvents(date) {
-        // Filtre les événements pour l'année donnée (même si le GID n'en contient qu'une)
+        // Simplement afficher TOUTES les lignes chargées (qui sont les dossiers)
+        // Comme le fichier CSV chargé ne contient que l'année demandée, pas besoin de filtrer par 'date'
         const events = {};
 
         for (const row of globalSheetData) {
-            if (Number(row.year) === date) {
-                if (!(row.event in events)){
-                    events[row.event] = "";
-                }
-                if (row.default.toLowerCase() === "x") {
-                    events[row.event] = row.folder;
-                }
-            }
+            // Dans ce mode simplifié, chaque ligne est un événement. 
+            // On utilise la ligne entière comme source de données.
+            events[row.event] = row.folder; 
         }
 
         document.getElementsByClassName('bouton-retour')[0].hidden = false;
         
-        // Réaffectation du bouton retour (nécessaire si l'on revient de displayFolder)
+        // Le bouton retour renvoie à la page des années disponibles (HTML)
         document.getElementById('back').addEventListener('click', () => {
-            if (requestedYear) {
-                 window.location.href = 'archives-photos.html'; // Retour au menu principal si année fixe
-            } else {
-                 displayDates(); // Retour à la liste des années si Archives Complètes
-            }
+             window.location.href = 'archives-photos.html'; 
         }, { once: true });
 
 
@@ -225,27 +158,24 @@ fetchSheetData().then(() => {
             const eventDiv = document.createElement('a');
             eventDiv.href = "";
             eventDiv.classList.add('card-photo','photo');
-            if (imageLink === "") {
-                eventDiv.innerHTML = `
-                <div class="photo-event">
-                    <img class="placeholder" src="https://placehold.co/90x90/aabbcc/ffffff?text=${evennement}" alt="">
-                </div>
-                <h3 class="card-title">${decodeURIComponent(evennement)}</h3>`
-            } else {
-                eventDiv.innerHTML = `
-                <div class="photo-event">
-                    <img class="image-adaptee" src="https://drive.google.com/thumbnail?id=${imageLink}" alt="⚠️ Image introuvable" Access-Control-Allow-Origin></img>
-                </div>
-                <h3 class="card-title">${decodeURIComponent(evennement)}</h3>`
-            }
+            
+            // Afficher l'image de référence du dossier
+            eventDiv.innerHTML = `
+            <div class="photo-event">
+                <img class="image-adaptee" src="https://drive.google.com/thumbnail?id=${imageLink}" alt="⚠️ Image introuvable" Access-Control-Allow-Origin></img>
+            </div>
+            <h3 class="card-title">${decodeURIComponent(evennement)}</h3>`;
+            
             eventDiv.addEventListener('click', (event) => {
                 event.preventDefault();
+                // Utiliser displayFolder comme avant pour ouvrir le lien Drive
                 displayFolder(date, evennement);
             })
             document.getElementById('events-list').appendChild(eventDiv);
         }
 
-        document.querySelectorAll('.image-adaptee').forEach(img => {
+        // ... (Logique de redimensionnement des images inchangée) ...
+         document.querySelectorAll('.image-adaptee').forEach(img => {
             img.onload = function() {
                 if (this.naturalWidth > this.naturalHeight) {
                 this.style.height = '100%';
@@ -259,31 +189,35 @@ fetchSheetData().then(() => {
             };
         });
     }
-
+    
+    // displayFolder reste inchangée, elle utilise le 'folder' (ID Drive)
     function displayFolder(date, event) {
-        const folder = [...new Set(globalSheetData
-                .filter(item => Number(item.year) === date && item.event === event)
-                .map(item => item.folder))];
-        document.getElementsByClassName('bouton-retour')[0].hidden = false;
+        // Puisque nous sommes déjà dans l'affichage des événements, on doit trouver le 'folder'
+        // directement dans les données chargées (globalSheetData).
+        const item = globalSheetData.find(row => row.event === event);
+        if (!item) return;
+
+        const folderName = item.folder; 
         
-        // Le bouton de retour renvoie à la liste des événements de l'année
+        document.getElementsByClassName('bouton-retour')[0].hidden = false;
         document.getElementById('back').addEventListener('click', () => {
-            displayEvents(date);
+            // Retour à la liste des événements de l'année
+            displayEvents(date); 
         }, { once: true })
         
         document.getElementById('dates-list').innerHTML = '';
         document.getElementById('events-list').innerHTML = '';
         document.getElementById('folder-list').innerHTML = '';
 
-        for (var folderName of folder) {
-            const folderDiv = document.createElement('a');
-            folderDiv.href = `https://drive.google.com/file/d/${folderName}/view?usp=drive_link`;
-            folderDiv.target = "_blank"
-            folderDiv.classList.add('card-photo','photo');
-            folderDiv.innerHTML = `
-            <img src="https://drive.google.com/thumbnail?id=${folderName}" alt="⚠️ Image introuvable" Access-Control-Allow-Origin></img>
-            `;
-            document.getElementById('folder-list').appendChild(folderDiv);
-        }
+        // Ici, on affiche directement le lien vers le dossier Drive
+        const folderDiv = document.createElement('a');
+        folderDiv.href = `https://drive.google.com/file/d/${folderName}/view?usp=drive_link`;
+        folderDiv.target = "_blank"
+        folderDiv.classList.add('card-photo','photo');
+        folderDiv.innerHTML = `
+        <h1>Cliquez pour ouvrir le dossier ${decodeURIComponent(event)} sur Google Drive</h1>
+        <img src="https://drive.google.com/thumbnail?id=${folderName}" alt="Dossier Drive" Access-Control-Allow-Origin></img>
+        `;
+        document.getElementById('folder-list').appendChild(folderDiv);
     }
 })
