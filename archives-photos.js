@@ -242,30 +242,45 @@ fetchSheetData().then(() => {
         });
     }
 
+   // --- NOUVELLE FONCTION displayFolder (REDIRECTION DIRECTE) ---
     function displayFolder(date, event) {
-        const folder = [...new Set(globalSheetData
-                .filter(item => Number(item.year) === date && item.event === event)
-                .map(item => item.folder))];
-        document.getElementsByClassName('bouton-retour')[0].hidden = false;
+        // 1. Trouver l'entrée de dossier unique dans les données chargées
+        const item = globalSheetData.find(row => 
+            Number(row.year) === date && 
+            row.event === event && 
+            row.folder // S'assure que l'ID du dossier existe
+        );
+
+        if (!item || !item.folder) {
+            alert("ID de dossier Google Drive introuvable pour cet événement.");
+            return;
+        }
+
+        const folderId = item.folder; 
         
-        // Le bouton de retour renvoie à la liste des événements de l'année
-        document.getElementById('back').addEventListener('click', () => {
-            displayEvents(date);
-        }, { once: true })
+        // 2. Construire l'URL du dossier Google Drive
+        // On utilise le format 'drive/folders/ID' pour ouvrir la galerie dans le navigateur
+        const driveUrl = `https://drive.google.com/drive/folders/${folderId}`;
+
+        // 3. Redirection : Ouvrir le dossier Drive dans un nouvel onglet
+        window.open(driveUrl, '_blank');
         
-        document.getElementById('dates-list').innerHTML = '';
-        document.getElementById('events-list').innerHTML = '';
+        // Après la redirection, vous pouvez vider ou laisser la page actuelle telle quelle.
+        // L'objectif principal de l'utilisateur (voir toutes les photos) est atteint via Drive.
+
+        // Si vous souhaitez afficher un message de confirmation avant la redirection :
+        
+        document.getElementsByClassName('bouton-retour')[0].hidden = true; // Cache le bouton retour
+        document.getElementById('events-list').innerHTML = ''; // Cache les autres événements
         document.getElementById('folder-list').innerHTML = '';
 
-        for (var folderName of folder) {
-            const folderDiv = document.createElement('a');
-            folderDiv.href = `https://drive.google.com/file/d/${folderName}/view?usp=drive_link`;
-            folderDiv.target = "_blank"
-            folderDiv.classList.add('card-photo','photo');
-            folderDiv.innerHTML = `
-            <img src="https://drive.google.com/thumbnail?id=${folderName}" alt="⚠️ Image introuvable" Access-Control-Allow-Origin></img>
-            `;
-            document.getElementById('folder-list').appendChild(folderDiv);
-        }
+        const messageDiv = document.createElement('div');
+        messageDiv.innerHTML = `
+            <h1 style="text-align:center;">Ouverture du dossier photo "${event}" sur Google Drive...</h1>
+            <p style="text-align:center;">Veuillez patienter.</p>
+        `;
+        document.getElementById('folder-list').appendChild(messageDiv);
     }
+    // -----------------------------------------------------------------
+    
 })
