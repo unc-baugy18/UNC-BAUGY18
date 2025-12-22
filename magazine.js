@@ -80,6 +80,10 @@ fetchSheetData().then(() => {
     
     // ... Affichage des éléments ...
     const carrousselElementsDiv = document.querySelector(".carroussel-elements");
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/Max
     globalSheetData.forEach(item => {
         if (carrousselElementsDiv) {
             const carrousselCardDiv = document.createElement("a");
