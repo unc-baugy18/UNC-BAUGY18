@@ -8,25 +8,19 @@
 
     <link rel="icon" type="image/png" href="UNC de Baugy_fichiers/logo unc.png">
     <link rel="stylesheet" href="UNC de Baugy_fichiers/style.css">
+    <link rel="stylesheet" href="UNC de Baugy_fichiers/style-archive-photo.css">
     <script src="includeur.js"></script>
 </head>
 <body data-page="photos">
     <header></header>
-    
-    <main>
-        <div class="bouton-retour" hidden>
-            <button id="back">retour</button>
-        </div>
-        <p hidden id="chargement">Récupération des données en cours veuillez patienter ...</p>
-        <div id="dates-list" class="groupe-photo"></div>
-        <div id="events-list" class="groupe-photo"></div>
-        <div id="folder-list" class="groupe-photo"></div>
-        
-    </main>
-    <script src="archives-photos.js"></script>
+    <script src="header.js"></script>
 
-    
+    <main style="display: unset; max-width: none; margin: 0;">
+        <div id="notre-tableau">Chargement en cours...</div>
+        <script src="archives-photos.js"></script>
+    </main>
+
     <footer></footer>
-    
+
 </body>
 </html>
