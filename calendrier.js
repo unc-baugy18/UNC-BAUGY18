@@ -3,44 +3,51 @@ async function chargerCalendrier() {
     const gid = '1274346425'; 
     const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
 
+    const zonePdf = document.getElementById('zone-pdf');
+
     try {
         const res = await fetch(url);
+        if (!res.ok) throw new Error("Impossible d'accéder au fichier Google Sheet.");
+        
         const text = await res.text();
-        const json = JSON.parse(text.substr(47).slice(0, -2));
+        
+        // Nettoyage de la réponse JSON de Google
+        const jsonText = text.substr(47).slice(0, -2);
+        const json = JSON.parse(jsonText);
 
-        // Recherche de la ligne avec le "X"
-        // On vérifie la colonne C (index 2) pour le "X"
-        const ligneSelectionnee = json.table.rows.find(row => {
-            return row.c[2] && (row.c[2].v === 'X' || row.c[2].v === 'x');
+        const rows = json.table.rows;
+        console.log("Lignes trouvées :", rows); // Visible dans la console (F12)
+
+        // On cherche le "X" (on teste plusieurs colonnes par sécurité : index 2 ou 3)
+        let ligneSelectionnee = rows.find(row => {
+            // Test colonne C (index 2) ou D (index 3)
+            const colC = row.c[2] ? row.c[2].v : null;
+            const colD = row.c[3] ? row.c[3].v : null;
+            return (colC === 'X' || colC === 'x' || colD === 'X' || colD === 'x');
         });
 
-        const zonePdf = document.getElementById('zone-pdf');
+        if (ligneSelectionnee) {
+            // On récupère le lien (souvent en colonne B index 1)
+            let lienBrut = ligneSelectionnee.c[1] ? ligneSelectionnee.c[1].v : null;
 
-        if (ligneSelectionnee && ligneSelectionnee.c[1]) {
-            let lienPdf = ligneSelectionnee.c[1].v;
+            if (lienBrut) {
+                // Transformation du lien pour l'affichage (remplace view par preview)
+                let lienPreview = lienBrut.replace(/\/view\?usp=sharing|\/view/g, "/preview");
 
-            // Transformation du lien Drive pour l'intégration (preview)
-            if (lienPdf.includes('file/d/')) {
-                const idMatch = lienPdf.match(/\/d\/(.+?)\//);
-                if (idMatch) {
-                    lienPdf = `https://drive.google.com/file/d/${idMatch[1]}/preview`;
-                }
+                zonePdf.innerHTML = `
+                    <div style="width:100%; max-width:900px; margin:auto;">
+                        <iframe src="${lienPreview}" width="100%" height="700px" style="border:1px solid #ddd; border-radius:8px;"></iframe>
+                    </div>`;
+            } else {
+                zonePdf.innerHTML = "Ligne trouvée avec 'X', mais le lien PDF est vide ou mal placé.";
             }
-
-            zonePdf.innerHTML = `
-                <div style="margin-bottom: 20px;">
-                    <iframe src="${lienPdf}" width="100%" height="800px" allow="autoplay" style="border: 2px solid #ccc; border-radius: 8px;"></iframe>
-                </div>
-                <a href="${ligneSelectionnee.c[1].v}" target="_blank" class="btn-retour" style="display:inline-block; text-decoration:none;">
-                    📥 Télécharger / Voir en plein écran
-                </a>
-            `;
         } else {
-            zonePdf.innerHTML = "Aucun calendrier n'est actuellement marqué d'un 'X' dans la colonne Choix.";
+            zonePdf.innerHTML = "Aucun calendrier n'est coché avec un 'X' dans l'onglet Calendriers.";
         }
+
     } catch (e) {
-        console.error("Erreur de chargement:", e);
-        document.getElementById('zone-pdf').innerHTML = "Erreur de connexion aux données du calendrier.";
+        console.error(e);
+        zonePdf.innerHTML = "Erreur technique : " + e.message;
     }
 }
 
