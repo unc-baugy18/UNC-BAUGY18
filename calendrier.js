@@ -7,47 +7,48 @@ async function chargerCalendrier() {
 
     try {
         const res = await fetch(url);
-        if (!res.ok) throw new Error("Impossible d'accéder au fichier Google Sheet.");
-        
         const text = await res.text();
         
-        // Nettoyage de la réponse JSON de Google
+        // Extraction et nettoyage du JSON Google
         const jsonText = text.substr(47).slice(0, -2);
         const json = JSON.parse(jsonText);
-
         const rows = json.table.rows;
-        console.log("Lignes trouvées :", rows); // Visible dans la console (F12)
 
-        // On cherche le "X" (on teste plusieurs colonnes par sécurité : index 2 ou 3)
-        let ligneSelectionnee = rows.find(row => {
-            // Test colonne C (index 2) ou D (index 3)
-            const colC = row.c[2] ? row.c[2].v : null;
-            const colD = row.c[3] ? row.c[3].v : null;
-            return (colC === 'X' || colC === 'x' || colD === 'X' || colD === 'x');
+        // On cherche la ligne où la colonne C (index 2) contient "X"
+        const ligneChoisie = rows.find(row => {
+            return row.c[2] && row.c[2].v && row.c[2].v.toString().trim().toUpperCase() === 'X';
         });
 
-        if (ligneSelectionnee) {
-            // On récupère le lien (souvent en colonne B index 1)
-            let lienBrut = ligneSelectionnee.c[1] ? ligneSelectionnee.c[1].v : null;
+        if (ligneChoisie && ligneChoisie.c[1]) {
+            let lienBrut = ligneChoisie.c[1].v;
 
-            if (lienBrut) {
-                // Transformation du lien pour l'affichage (remplace view par preview)
-                let lienPreview = lienBrut.replace(/\/view\?usp=sharing|\/view/g, "/preview");
+            // Nettoyage précis du lien pour Google Drive iframe
+            // On extrait l'ID du fichier entre /d/ et /view
+            const idMatch = lienBrut.match(/\/d\/(.+?)\//);
+            
+            if (idMatch && idMatch[1]) {
+                const idFichier = idMatch[1];
+                const lienPreview = `https://drive.google.com/file/d/${idFichier}/preview`;
 
                 zonePdf.innerHTML = `
-                    <div style="width:100%; max-width:900px; margin:auto;">
-                        <iframe src="${lienPreview}" width="100%" height="700px" style="border:1px solid #ddd; border-radius:8px;"></iframe>
+                    <div style="width:100%; max-width:1000px; margin: 0 auto;">
+                        <iframe src="${lienPreview}" width="100%" height="800px" style="border: 2px solid #333; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);" allow="autoplay"></iframe>
+                        <div style="margin-top: 15px; text-align: center;">
+                            <a href="${lienBrut}" target="_blank" class="btn-retour" style="display:inline-block; text-decoration:none; padding: 10px 20px; background-color: #004a99; color: white; border-radius: 5px;">
+                                📥 Ouvrir / Télécharger le PDF
+                            </a>
+                        </div>
                     </div>`;
             } else {
-                zonePdf.innerHTML = "Ligne trouvée avec 'X', mais le lien PDF est vide ou mal placé.";
+                zonePdf.innerHTML = "Le lien dans le tableau n'est pas au bon format.";
             }
         } else {
-            zonePdf.innerHTML = "Aucun calendrier n'est coché avec un 'X' dans l'onglet Calendriers.";
+            zonePdf.innerHTML = "Aucun calendrier sélectionné (pas de 'X' trouvé dans la colonne choix).";
         }
 
     } catch (e) {
-        console.error(e);
-        zonePdf.innerHTML = "Erreur technique : " + e.message;
+        console.error("Erreur:", e);
+        zonePdf.innerHTML = "Erreur lors de la récupération du calendrier.";
     }
 }
 
