@@ -1,6 +1,6 @@
 async function chargerCalendrier() {
     const sheetId = '1fon3ys-2OU6PCoxAi3nBObV2edTx4Y5I6JI60FBg9uY';
-    const gid = 1274346425; 
+    const gid = '1274346425'; 
     const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
 
     try {
@@ -8,34 +8,39 @@ async function chargerCalendrier() {
         const text = await res.text();
         const json = JSON.parse(text.substr(47).slice(0, -2));
 
-        // On cherche la ligne qui a "X" dans la colonne "choix" (colonne 2, index 2)
-        // Structure supposée : A=Année(0), B=Lien(1), C=Choix(2)
+        // Recherche de la ligne avec le "X"
+        // On vérifie la colonne C (index 2) pour le "X"
         const ligneSelectionnee = json.table.rows.find(row => {
-            return row.c[2] && row.c[2].v === 'X';
+            return row.c[2] && (row.c[2].v === 'X' || row.c[2].v === 'x');
         });
+
+        const zonePdf = document.getElementById('zone-pdf');
 
         if (ligneSelectionnee && ligneSelectionnee.c[1]) {
             let lienPdf = ligneSelectionnee.c[1].v;
 
-            // Transformation du lien Drive pour l'affichage direct
-            // Si c'est un lien de partage classique, on le transforme en mode "preview"
-            if (lienPdf.includes('view')) {
-                lienPdf = lienPdf.replace('/view', '/preview');
+            // Transformation du lien Drive pour l'intégration (preview)
+            if (lienPdf.includes('file/d/')) {
+                const idMatch = lienPdf.match(/\/d\/(.+?)\//);
+                if (idMatch) {
+                    lienPdf = `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+                }
             }
 
-            document.getElementById('zone-pdf').innerHTML = `
-                <iframe src="${lienPdf}" width="100%" height="800px" style="border: none; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>
-                <br>
-                <a href="${lienPdf.replace('/preview', '/view')}" target="_blank" class="btn-annee" style="display:inline-block; margin-top:15px; text-decoration:none;">
-                    Ouvrir en plein écran / Télécharger
+            zonePdf.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <iframe src="${lienPdf}" width="100%" height="800px" allow="autoplay" style="border: 2px solid #ccc; border-radius: 8px;"></iframe>
+                </div>
+                <a href="${ligneSelectionnee.c[1].v}" target="_blank" class="btn-retour" style="display:inline-block; text-decoration:none;">
+                    📥 Télécharger / Voir en plein écran
                 </a>
             `;
         } else {
-            document.getElementById('zone-pdf').innerHTML = "Aucun calendrier sélectionné pour le moment.";
+            zonePdf.innerHTML = "Aucun calendrier n'est actuellement marqué d'un 'X' dans la colonne Choix.";
         }
     } catch (e) {
-        console.error("Erreur:", e);
-        document.getElementById('zone-pdf').innerHTML = "Erreur lors du chargement du calendrier.";
+        console.error("Erreur de chargement:", e);
+        document.getElementById('zone-pdf').innerHTML = "Erreur de connexion aux données du calendrier.";
     }
 }
 
