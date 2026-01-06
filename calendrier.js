@@ -1,6 +1,6 @@
 async function chargerCalendrier() {
     const sheetId = '1fon3ys-2OU6PCoxAi3nBObV2edTx4Y5I6JI60FBg9uY';
-    const gid = '1274346425'; 
+    const gid = 1274346425; 
     const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=${gid}`;
 
     try {
