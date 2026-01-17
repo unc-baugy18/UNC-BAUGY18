@@ -791,3 +791,51 @@ footer {
         column-count: 1;
     }
 }
+/* Conteneur principal du calendrier */
+.calendrier-wrapper {
+    width: 100%;
+    max-width: 900px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 10px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15); /* Ombre douce */
+}
+
+/* Conteneur de l'iframe pour garder un ratio propre */
+.iframe-container {
+    position: relative;
+    width: 100%;
+    height: 75vh; /* 75% de la hauteur de l'écran */
+    min-height: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+/* Style du bouton de téléchargement */
+.btn-download {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background-color: #004a99;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 50px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.btn-download:hover {
+    background-color: #003366;
+    transform: translateY(-2px);
+}
+
+/* Animation de chargement */
+.loader-calendrier {
+    padding: 50px;
+    font-style: italic;
+    color: #666;
+}
