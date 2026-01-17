@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier - UNC de Baugy</title>
     
     <link rel="icon" type="image/png" href="UNC de Baugy_fichiers/logo unc.png">
     <link rel="stylesheet" href="UNC de Baugy_fichiers/style.css">
-    <script src="includeur.js"></script>
 </head>
 <body data-page="calendrier">
-    <header></header>
-    <script src="header.js"></script>
+
+    <header id="main-header"></header>
 
     <main id="container-calendrier" style="text-align: center; padding: 20px;">
-        <h2>Notre Calendrier</h2>
-        <div id="zone-pdf">Chargement du calendrier...</div>
+        <h2 style="margin-bottom: 25px;">Notre Calendrier</h2>
+        
+        <div id="zone-pdf">
+            <p>Chargement du calendrier en cours...</p>
+        </div>
     </main>
     
     <footer></footer>
 
-</body>
+    <script src="header.js"></script>
+    <script src="includeur.js"></script>
+    <script src="calendrier.js"></script> </body>
 </html>
