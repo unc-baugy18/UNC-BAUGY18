@@ -1,112 +1,80 @@
-// Fonction pour vérifier si une image existe
-async function imageExiste(url) {
+
+const Photo_path = 'UNC%20de%20Baugy_fichiers/photos/';
+let globalData = [];
+
+async function initialiserContact() {
+    const sheetId = '1fon3ys-2OU6PCoxAi3nBObV2edTx4Y5I6JI60FBg9uY';
+    const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&gid=109617783`;
     try {
-        const response = await fetch(url, { method: 'HEAD' });
-        return response.ok;
+        const res = await fetch(url);
+        const text = await res.text();
+        const json = JSON.parse(text.substr(47).slice(0, -2));
+
+        for (const item of json.table.rows) {
+            console.log((item.c[0]?.v || "Membre") +": " + item.c[2]?.v + " " + item.c[3]?.v);
+        }
+
+        globalData = json.table.rows.map(row => ({
+                fonction: row.c[0]?.v || "Membre",
+                m_mme: row.c[1]?.v || "",
+                nom: row.c[2]?.v || "",
+                prenom: row.c[3]?.v || "",
+                photo: row.c[4]?.v || "default-avatar.png",
+                email: row.c[5]?.v || "",
+                group: parseInt(row.c[6]?.v) || 99
+        })).filter(item => item.nom && item.prenom && item.nom !== "Nom");
+
+        const listBureau = globalData.filter(contact => !contact.fonction.toLowerCase().includes('membre'));
+        const listMembres = globalData.filter(contact => contact.fonction.toLowerCase().includes('membre'));
+
+        listBureau.sort((a, b) => a.group - b.group);
+        listMembres.sort((a, b) => a.nom.localeCompare(b.nom));
+
+        afficherContacts(listBureau, listMembres);
     } catch (e) {
-        return false;
+        console.error("Erreur:", e);
+        document.getElementById('notre-tableau').innerHTML = "Erreur de connexion aux données.";
     }
 }
 
-// Fonction pour afficher le personnel
-async function afficherPersonnel() {
-    try {
-        const reponse = await fetch('contact.json');
-        const { bureau, membres } = await reponse.json();
-        const bureau_group = document.getElementById('bureau');
-        const bureau_indiv = document.getElementById('bureau-indiv');
-        const membres_indiv = document.getElementById('membres');
-        const cheminImages = "UNC de Baugy_fichiers/photos/";
-        const avatarParDefaut = `${cheminImages}default-avatar.png`;
+function afficherContacts(bureau, membres)
+{
+    const bureauContainer = document.getElementById('bureau-container');
+    const membresContainer = document.getElementById('membres-container');
 
-        // Afficher le bureau
-        for (const element of bureau) {
-            if (element.type === "groupe") {
-                const groupeDiv = document.createElement('div');
-                groupeDiv.className = "groupe";
+    bureauContainer.innerHTML = '';
+    membresContainer.innerHTML = '';
 
-                for (const membre of element.membres) {
-                    let imagePath = membre.image ?
-                        `${cheminImages}${membre.image}` :
-                        avatarParDefaut;
+    const createCard = (contact) => {
+        const div = document.createElement('div');
+        div.classList.add('groupe-indiv-contact');
+        const emailHtml = contact.email
+            ? `<a href="mailto:${contact.email}" class="contact-email">${contact.email}</a>`
+            : '';
 
-                    const existe = await imageExiste(imagePath);
-                    if (!existe && membre.image) {
-                        imagePath = avatarParDefaut;
-                    }
+        div.innerHTML = `
+            <span>${contact.fonction}</span>
+            <strong>${contact.m_mme} ${contact.nom} ${contact.prenom}</strong>
+            ${emailHtml}
+            <img src="${Photo_path}${contact.photo}" alt="Photo" />
+        `;
+        return div;
+    };
 
-                    // Nouveau code qui gère l'affichage de l'email
-                    const membreCarte = document.createElement('div');
-                    membreCarte.className = 'card-role';
+    let currentGroupId = null;
+    let currentGroupDiv = null;
 
-                    let emailLink = '';
-                    // Si le groupe a un attribut 'mail', on crée le lien
-                    if (element.mail) {
-                        emailLink = `<a href="mailto:${element.mail}" class="card-mail">${element.mail}</a>`;
-                    }
-
-                    // On reconstruit le contenu HTML pour inclure le lien
-                    membreCarte.innerHTML = `
-                        <img src="${imagePath}" alt="${membre.nom}" class="card-image"/>
-                        <div class="card-info">
-                            <p class="card-text" id="role">${membre.role}</p>
-                            <p class="card-text" id="nom">${membre.nom}</p>
-                            ${emailLink}
-                        </div>
-                    `;
-                    groupeDiv.appendChild(membreCarte);
-                }
-
-                bureau_group.appendChild(groupeDiv);
-            } else if (element.type === "individuel") {
-                const membre = element.membre;
-                let imagePath = membre.image ?
-                    `${cheminImages}${membre.image}` :
-                    avatarParDefaut;
-
-                const existe = await imageExiste(imagePath);
-                if (!existe && membre.image) {
-                    imagePath = avatarParDefaut;
-                }
-
-                const individuelDiv = document.createElement('div');
-                individuelDiv.className = 'card-role';
-                individuelDiv.innerHTML = `
-                    <img src="${imagePath}" alt="${membre.nom}" class="card-image"/>
-                    <div class="card-info">
-                        <p class="card-text" id="role">${membre.role}</p>
-                        <p class="card-text" id="nom">${membre.nom}</p>
-                    </div>
-                `;
-                bureau_indiv.appendChild(individuelDiv);
-            }
+    bureau.forEach(contact => {
+        if (contact.group !== currentGroupId) {
+            currentGroupId = contact.group;
+            currentGroupDiv = document.createElement('div');
+            currentGroupDiv.classList.add('bureau-group');
+            bureauContainer.appendChild(currentGroupDiv);
         }
-
-        // Afficher les membres
-        for (const membre of membres) {
-            let imagePath = membre.image ?
-                `${cheminImages}${membre.image}` :
-                avatarParDefaut;
-
-            const existe = await imageExiste(imagePath);
-            if (!existe && membre.image) {
-                imagePath = avatarParDefaut;
-            }
-
-            const membreDiv = document.createElement('div');
-            membreDiv.className = 'card-membre';
-            membreDiv.innerHTML = `
-                <img src="${imagePath}" alt="${membre.nom}" class="card-image"/>
-                <div class="card-info">
-                    <p class="card-text" id="nom">${membre.nom}</p>
-                </div>
-            `;
-            membres_indiv.appendChild(membreDiv);
-        }
-    } catch (erreur) {
-        console.error("Erreur :", erreur);
-    }
+        currentGroupDiv.appendChild(createCard(contact));
+    });
+    membres.forEach(c => membresContainer.appendChild(createCard(c)));
 }
 
-// Appel de la fonction au chargement de la page
-window.onload = afficherPersonnel;
+
+document.addEventListener('DOMContentLoaded', initialiserContact);
